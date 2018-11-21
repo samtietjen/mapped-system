@@ -1,6 +1,7 @@
 # Mapped Classes
 Convert objects into consistent class name strings. 
 
+## Installation
 ```shell
 npm i @samtietjen/mapped-classes --save
 ```

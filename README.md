@@ -4,6 +4,7 @@ A React utility for building [single element](https://medium.freecodecamp.org/in
 - Increase readability for better communication.
 - Create styling APIs without CSS-in-JS.
 
+## Installation
 ```shell
 npm i @samtietjen/mapped-system --save
 ```
