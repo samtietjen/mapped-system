@@ -1,0 +1,38 @@
+{
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "regenerator-runtime": "^0.12.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "collectCoverageFrom": [
+      "packages/**/*.{js,jsx}",
+      "!packages/*/test.js"
+    ],
+    "testMatch": [
+      "<rootDir>/packages/*/test.js"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "mapped-classes": "<rootDir>//packages/mapped-classes/src",
+      "mapped-components": "<rootDir>//packages/mapped-components/src",
+      "mapped-system": "<rootDir>//packages/mapped-system/src"
+    }
+  }
+}

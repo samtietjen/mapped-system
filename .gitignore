@@ -1,0 +1,6 @@
+packages/*/node_modules
+packages/*/package-lock.json
+packages/*/dist
+packages/*/dist.js
+node_modules
+package-lock.json
