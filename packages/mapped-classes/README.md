@@ -6,11 +6,6 @@ Convert objects into consistent class name strings.
 npm i @samtietjen/mapped-classes --save
 ```
 
-<a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
-<img src="https://img.shields.io/badge/stability-experimental-lightgrey.svg?style=flat-square"></a>
-<a href="https://opensource.org/licenses/MIT">
-<img src="https://img.shields.io/badge/license-MIT-black.svg?style=flat-square"></a>
-
 ## Usage
 ```js
 import createMapper from '@samtietjen/mapped-classes';

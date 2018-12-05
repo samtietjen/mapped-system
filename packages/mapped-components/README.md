@@ -5,9 +5,6 @@ A utility for building React components that map to your stylesheet.
 ```shell
 npm i @samtietjen/mapped-components --save
 ```
-<a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
-<img src="https://img.shields.io/badge/stability-experimental-lightgrey.svg?style=flat-square"></a> <a href="https://opensource.org/licenses/MIT">
-<img src="https://img.shields.io/badge/license-MIT-black.svg?style=flat-square"></a>
 
 ## Usage
 ```jsx
