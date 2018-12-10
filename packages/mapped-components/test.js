@@ -8,9 +8,9 @@ Enzyme.configure({adapter: new Adapter()});
 
 const mapped = mapper({
   breakpoints: [null, 'md', 'lg'],
-  getter: ({breakpoint, root, value}) => (
-    [breakpoint, root, value].filter(Boolean).join('-')
-  )
+  getter: ({ breakpoint, root, value }) => [breakpoint, root, value]
+    .filter(x => x && value !== false || x === 0)
+    .join('-')
 });
 
 const Comp = mapped({size: 'comp-size'});
@@ -60,4 +60,9 @@ test('Add responsive classes when passing an array.', () => {
 test('Reject null values.', () => {
   const a = shallow(<Comp size={null} />);
   expect(a.html()).toEqual('<div></div>');  
+});
+
+test('Accept 0 values.', () => {
+  const a = shallow(<Comp size={0} />);
+  expect(a.html()).toEqual('<div class="comp-size-0"></div>');  
 });
