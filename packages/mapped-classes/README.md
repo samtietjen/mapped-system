@@ -13,9 +13,9 @@ import createMapper from '@samtietjen/mapped-classes';
 const mapper = createMapper({
   breakpoints: [null, 'md', 'lg'],
   mappings: { fontSize: 'font-size', padding: 'p' },
-  getter: ({ breakpoint, root, value }) => (
-    [breakpoint, root, value].filter(Boolean).join('-')
-  )
+  getter: ({ breakpoint, root, value }) => [breakpoint, root, value]
+    .filter(x => x && value !== false || x === 0)
+    .join('-')
 });
  
 const classes = mapper({ 
