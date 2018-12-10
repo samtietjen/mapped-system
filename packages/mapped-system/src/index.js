@@ -14,7 +14,8 @@ const getClassNameValue = v => {
 
 const getClassName = (breakpoint, root, value) => [breakpoint]
   .concat(funcOrSplit(root, getClassNameValue(value)))
-  .filter(Boolean).join('-');
+  .filter(x => x || x === 0)
+  .join('-');
 
 const handleObject = (obj, root) => {
   let result = [];
