@@ -1,6 +1,6 @@
 {
   "name": "@samtietjen/mapped-components",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "description": "Create components that map props to class names",
   "main": "dist/index.js",
   "repository": {
@@ -13,14 +13,14 @@
   },
   "dependencies": {
     "@samtietjen/mapped-classes": "^1.3.0",
-    "prop-types": "^15.6.1",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react": "^16.5.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.1.0",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1"
+    "enzyme-adapter-react-16": "^1.1.1",
+    "prop-types": "^15.6.1",
+    "react-dom": "^16.5.2"
   }
 }

@@ -13,9 +13,9 @@ import mapper from '@samtietjen/mapped-components';
 
 const mapped = mapper({
   breakpoints: [null, 'md', 'lg'],
-  getter: ({ breakpoint, root, value }) => (
-    [breakpoint, root, value].filter(Boolean).join('-')
-  )
+  getter: ({ breakpoint, root, value }) => [breakpoint, root, value]
+    .filter(x => x && value !== false || x === 0)
+    .join('-')
 });
 
 const Text = mapped({

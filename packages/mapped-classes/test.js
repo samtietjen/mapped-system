@@ -7,9 +7,9 @@ const mapper = createMapper({
     fontSize: 'font-size', 
     padding: 'p' 
   },
-  getter: ({ breakpoint, root, value }) => value
-    ? [breakpoint, root, value].filter(Boolean).join('-')
-    : value
+  getter: ({ breakpoint, root, value }) => [breakpoint, root, value]
+    .filter(x => x && value !== false || x === 0)
+    .join('-')
 });
 
 test('Returns mapping for matching roots.', () => {
@@ -54,4 +54,9 @@ test('Can reject while false.', () => {
   expect(a).toBeNull;
   expect(b).toBe('p-true');
   expect(c).toBe('p-1 lg-p-3');
+});
+
+test('Accepts 0 values.', () => {
+  const a = mapper({padding: 0});
+  expect(a).toBe('p-0');  
 });

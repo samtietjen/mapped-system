@@ -73,7 +73,9 @@ describe('Strings', () => {
 describe('Numbers', () => {
   test('Accepts number values.', () => {
     const a = shallow(<Text size={1} />);
-    expect(a.html()).toEqual('<div class="text-size-1"></div>');  
+    const b = shallow(<Text size={0} />);
+    expect(a.html()).toEqual('<div class="text-size-1"></div>');
+    expect(b.html()).toEqual('<div class="text-size-0"></div>');  
   });
 
   test('Rounds floats to the nearest integer.', () => {
