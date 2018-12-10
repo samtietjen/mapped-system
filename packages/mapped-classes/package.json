@@ -1,6 +1,6 @@
 {
   "name": "@samtietjen/mapped-classes",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Convert objects into class names",
   "main": "dist/index.js",
   "repository": {
