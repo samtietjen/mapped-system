@@ -12,9 +12,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "@samtietjen/mapped-components": "0.11.1",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "@samtietjen/mapped-components": "0.11.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -22,6 +20,8 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^23.6.0",
-    "jest-cli": "^23.6.0"
+    "jest-cli": "^23.6.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   }
 }
