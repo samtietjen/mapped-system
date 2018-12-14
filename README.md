@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.1.0-black.svg?style=flat-square">
+    <img src="https://img.shields.io/badge/npm-v0.1.1-black.svg?style=flat-square">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-lightgrey.svg?style=flat-square">
