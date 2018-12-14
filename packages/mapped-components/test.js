@@ -18,6 +18,7 @@ const Comp = mapped({size: 'comp-size'});
 Comp.propTypes = {
   base: PropTypes.string,
   tag: PropTypes.string,
+  blacklist: PropTypes.array,
   size: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -65,4 +66,11 @@ test('Reject null values.', () => {
 test('Accept 0 values.', () => {
   const a = shallow(<Comp size={0} />);
   expect(a.html()).toEqual('<div class="comp-size-0"></div>');  
+});
+
+test('Reject blacklist values.', () => {
+  const a = shallow(<Comp reject="value" blacklist={['reject']} />);
+  const b = shallow(<Comp reject="value" />);
+  expect(a.html()).toEqual('<div></div>');  
+  expect(b.html()).toEqual('<div reject="value"></div>');  
 });

@@ -27,10 +27,16 @@ export default config => mappings => {
     return join([base, mapped(values), className]);
   }
 
-  const Component = props => React.createElement(props.tag || 'div', { 
-    className: classNames(props), 
-    ...omit(props, Object.keys(mappings).concat(['className', 'base', 'tag'])) 
-  });
+  const Component = ({ blacklist, ...rest }) => (
+    React.createElement(rest.tag || 'div', { 
+      className: classNames(rest), 
+      ...omit(rest, [
+        ...Object.keys(mappings),
+        ...['base', 'blacklist', 'className', 'tag'],
+        ...blacklist || []
+      ])
+    })
+  );
 
   Component.mappings = mappings;
   Component.classNames = classNames;
