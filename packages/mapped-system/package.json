@@ -1,6 +1,6 @@
 {
   "name": "@samtietjen/mapped-system",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React primitives made with Mapped Components",
   "main": "dist/index.js",
   "repository": {
