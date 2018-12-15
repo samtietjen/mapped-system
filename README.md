@@ -28,6 +28,7 @@
 ```shell
 npm i @samtietjen/mapped-system --save
 ```
+> **Caution!** This package is still very experimental. 👨‍🔬
 
 ## Usage
 Create a component by passing `mapped` an object that pairs prop keys with class names. This example includes two built-in utilities for prepending a `base` class and transforming the element's HTML `tag`.

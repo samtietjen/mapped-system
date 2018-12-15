@@ -5,6 +5,7 @@ A utility for building React components that map to your stylesheet.
 ```shell
 npm i @samtietjen/mapped-components --save
 ```
+> **Caution!** This package is still very experimental. 👨‍🔬
 
 ## Usage
 ```jsx
