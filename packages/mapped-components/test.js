@@ -74,3 +74,16 @@ test('Reject blacklist values.', () => {
   expect(a.html()).toEqual('<div></div>');  
   expect(b.html()).toEqual('<div reject="value"></div>');  
 });
+
+test('Accepts callbacks.', () => {
+  const Callback = mapped({
+    size: 'comp-size'
+  }, ({ style, align }) => ({ 
+    style: { 
+      ...style, 
+      textAlign: align 
+    }
+  }));
+  const a = shallow(<Callback size={1} align="left" blacklist={['align']} />);
+  expect(a.html()).toEqual('<div class="comp-size-1" style="text-align:left"></div>');  
+});
