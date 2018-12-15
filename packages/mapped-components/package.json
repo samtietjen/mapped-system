@@ -1,6 +1,6 @@
 {
   "name": "@samtietjen/mapped-components",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Create components that map props to class names",
   "main": "dist/index.js",
   "repository": {
