@@ -15,7 +15,7 @@ export const omit = (obj, keys) => {
   return next;
 }
 
-export default config => mappings => {
+export default config => (mappings, cb) => {
   const mapped = createMapper({ ...config, mappings })
 
   const classNames = ({ base, className, ...obj }) => {
@@ -27,8 +27,12 @@ export default config => mappings => {
     return join([base, mapped(values), className]);
   }
 
-  const Component = ({ blacklist, ...rest }) => (
-    React.createElement(rest.tag || 'div', { 
+  const Component = props => {
+    const { blacklist, tag, ...rest } = typeof(cb) === 'function' 
+      ? { ...props, ...cb(props) } 
+      : props;
+
+    return React.createElement(tag || 'div', { 
       className: classNames(rest), 
       ...omit(rest, [
         ...Object.keys(mappings),
@@ -36,7 +40,7 @@ export default config => mappings => {
         ...blacklist || []
       ])
     })
-  );
+  }
 
   Component.mappings = mappings;
   Component.classNames = classNames;
