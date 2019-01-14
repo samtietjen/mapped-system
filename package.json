@@ -1,6 +1,6 @@
 {
   "name": "@samtietjen/mapped-system",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Single element components that map to your stylesheet",
   "main": "dist/index.js",
   "author": "Sam Tietjen",
