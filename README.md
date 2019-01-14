@@ -84,10 +84,7 @@ The prop's type and characters may affect how it appends. [Read more](docs/rules
 ```
 
 ### Utilities
-Each component includes a set of utility props:
-- `base`(*string*): Prepend a class to the class list.
-- `blacklist`(*array*): Block attributes from an element.
-- `tag`(*string*): Transform the HTML tag.
+Each component includes a set of utility props. [Read More](https://github.com/samtietjen/mapped-system/tree/master/packages/mapped-components#utilities)
 
 ```jsx
 <Text base="text" size={1} /> 
@@ -101,19 +98,15 @@ Each component includes a set of utility props:
 ```
 
 ### Add-Ons
-Any function passed as an argument will merge its output with props.
+Passing a function as an argument will merge its output with props. [Read More](https://github.com/samtietjen/mapped-system/tree/master/packages/mapped-components#add-ons)
 
-```js
+```jsx
 const Text = mapped({
   size: 'text-size'
 }, ({ className, size }) => ({
   className: className + (size > 3 && ' is-large')
 }));
-```
 
-`Text` adds `is-large` to `className` while `size > 3`.
-
-```jsx
 <Text size={4} />
 // <p class="text-size-4 is-large"></p>
 ```
@@ -121,8 +114,8 @@ const Text = mapped({
 ## Packages
 | Package | Description |
 | ------- | ----------- |
-| [Mapped Classes](packages/mapped-classes) | Objects to class name strings |
-| [Mapped Components](packages/mapped-components) | Components that map to your stylesheet |
+| [Mapped Classes](https://github.com/samtietjen/mapped-system/tree/master/packages/mapped-classes) | Objects to class name strings |
+| [Mapped Components](https://github.com/samtietjen/mapped-system/tree/master/packages/mapped-components) | Components that map to your stylesheet |
 
 ## Credits
 Inspired by [Brent Jackson](http://jxnblk.com/)'s [Styled System](https://github.com/jxnblk/styled-system) and [Diego Haz](https://twitter.com/diegohaz)'s [Singel](https://github.com/diegohaz/singel).
