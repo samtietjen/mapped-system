@@ -8,17 +8,22 @@ Enzyme.configure({adapter: new Adapter()});
 
 const mapped = mapper({
   breakpoints: [null, 'md', 'lg'],
-  getter: ({ breakpoint, root, value }) => [breakpoint, root, value]
-    .filter(x => x && value !== false || x === 0)
-    .join('-')
+  getter: ({ breakpoint, root, value }) => ( 
+    [breakpoint, root, value]
+      .filter(x => x && value !== false || x === 0)
+      .join('-')
+  )
 });
 
-const Comp = mapped({size: 'comp-size'});
+const Text = mapped({
+  size: 'text-size'
+});
 
-Comp.propTypes = {
+Text.propTypes = {
   base: PropTypes.string,
   tag: PropTypes.string,
   blacklist: PropTypes.array,
+  color: PropTypes.string,
   size: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -26,64 +31,55 @@ Comp.propTypes = {
   ])
 }
 
-test('Creates a component.', () => {
-  const a = shallow(<Comp size={1}>Hello, World!</Comp>);
-  expect(a.html()).toEqual('<div class="comp-size-1">Hello, World!</div>');  
+test('Create a component.', () => {
+  const a = shallow(<Text size={1}>Hello, World!</Text>);
+  expect(a.html()).toEqual('<div class="text-size-1">Hello, World!</div>');  
 });
 
-test('Accept HTML properties.', () => {
-  const a = shallow(<Comp id="my-id" size={1} />);
-  expect(a.html()).toEqual('<div class="comp-size-1" id="my-id"></div>');  
+test('Accept element attributes.', () => {
+  const a = shallow(<Text id="my-id" size={1} />);
+  expect(a.html()).toEqual('<div class="text-size-1" id="my-id"></div>');  
 });
 
-test('Add classes via class prop.', () => {
-  const a = shallow(<Comp className="my-class" />);
-  const b = shallow(<Comp className="my-class" size={1} />);
+test('Accepts classNames.', () => {
+  const a = shallow(<Text className="my-class" />);
+  const b = shallow(<Text className="my-class" size={1} />);
   expect(a.html()).toEqual('<div class="my-class"></div>');  
-  expect(b.html()).toEqual('<div class="comp-size-1 my-class"></div>');  
-});
-
-test('Add "base" as the first class.', () => {
-  const a = shallow(<Comp size={1} base="comp" />);
-  expect(a.html()).toEqual('<div class="comp comp-size-1"></div>');  ;
-});
-
-test('Transform tags with "tag" prop.', () => {
-  const a = shallow(<Comp tag="section" size={1} />);
-  expect(a.html()).toEqual('<section class="comp-size-1"></section>');  
-});
-
-test('Add responsive classes when passing an array.', () => {
-  const a = shallow(<Comp size={[1, 2, 3]} />);
-  expect(a.html()).toEqual('<div class="comp-size-1 md-comp-size-2 lg-comp-size-3"></div>');  
+  expect(b.html()).toEqual('<div class="text-size-1 my-class"></div>');  
 });
 
 test('Reject null values.', () => {
-  const a = shallow(<Comp size={null} />);
+  const a = shallow(<Text size={null} />);
   expect(a.html()).toEqual('<div></div>');  
 });
 
-test('Accept 0 values.', () => {
-  const a = shallow(<Comp size={0} />);
-  expect(a.html()).toEqual('<div class="comp-size-0"></div>');  
+test('Add responsive classes when passing an array.', () => {
+  const a = shallow(<Text size={[1, 2, 3]} />);
+  expect(a.html()).toEqual('<div class="text-size-1 md-text-size-2 lg-text-size-3"></div>');  
 });
 
-test('Reject blacklist values.', () => {
-  const a = shallow(<Comp reject="value" blacklist={['reject']} />);
-  const b = shallow(<Comp reject="value" />);
+test('Accepts functions as arguments.', () => {
+  const append = (a, b) => [a, b].filter(Boolean).join(' ');
+  const hasSize = ({ size, className }) => ({ className: append(className, size && 'has-size') });
+  const Comp = mapped({size: 'text-size'}, hasSize)
+  const a = shallow(<Comp size={1} />);
+  expect(a.html()).toEqual('<div class="text-size-1 has-size"></div>');  
+});
+
+
+test('Prepend a class to the class list', () => {
+  const a = shallow(<Text size={1} base="comp" />);
+  expect(a.html()).toEqual('<div class="comp text-size-1"></div>');  ;
+});
+
+test('Transform the HTML tag', () => {
+  const a = shallow(<Text tag="h2" />);
+  expect(a.html()).toEqual('<h2></h2>');  
+});
+
+test('Block attributes from an element.', () => {
+  const a = shallow(<Text href="#" blacklist={['href']} />);
+  const b = shallow(<Text href="#" />);
   expect(a.html()).toEqual('<div></div>');  
-  expect(b.html()).toEqual('<div reject="value"></div>');  
-});
-
-test('Accepts callbacks.', () => {
-  const Callback = mapped({
-    size: 'comp-size'
-  }, ({ style, align }) => ({ 
-    style: { 
-      ...style, 
-      textAlign: align 
-    }
-  }));
-  const a = shallow(<Callback size={1} align="left" blacklist={['align']} />);
-  expect(a.html()).toEqual('<div class="comp-size-1" style="text-align:left"></div>');  
+  expect(b.html()).toEqual('<div href="#"></div>');  
 });

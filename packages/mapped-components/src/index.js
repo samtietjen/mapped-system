@@ -1,11 +1,6 @@
 import React from 'react';
 import createMapper from '@samtietjen/mapped-classes';
 
-export const join = (items, separator = ' ') => {
-  const next = items.filter(Boolean);
-  return next.length ? next.join(separator) : null;
-};
-
 export const omit = (obj, keys) => {
   const next = {};
   for (let key in obj) {
@@ -24,7 +19,9 @@ export default config => (mappings, cb) => {
       if (mappings[key] === undefined) continue;
       values[key] = obj[key];
     }
-    return join([base, mapped(values), className]);
+
+    const result = [base, mapped(values), className].filter(x => x);
+    return result.length ? result.join(' ') : null;
   }
 
   const Component = props => {

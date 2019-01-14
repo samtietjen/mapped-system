@@ -1,6 +1,19 @@
 {
+  "name": "@samtietjen/mapped-system",
+  "version": "0.2.0",
+  "description": "Single element components that map to your stylesheet",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/samtietjen/mapped-system.git"
+  },
   "scripts": {
+    "build": "NODE_ENV=production babel src -d dist --config-file './babel.config.js'",
+    "prepublish": "npm run build",
     "test": "jest"
+  },
+  "dependencies": {
+    "@samtietjen/mapped-components": "0.13.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -10,29 +23,12 @@
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
+    "prop-types": "^15.6.1",
+    "react-dom": "^16.5.2",
     "regenerator-runtime": "^0.12.1"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "jsx"
-    ],
-    "collectCoverageFrom": [
-      "packages/**/*.{js,jsx}",
-      "!packages/*/test.js"
-    ],
-    "testMatch": [
-      "<rootDir>/packages/*/test.js"
-    ],
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    },
-    "moduleNameMapper": {
-      "mapped-classes": "<rootDir>//packages/mapped-classes/src",
-      "mapped-components": "<rootDir>//packages/mapped-components/src",
-      "mapped-system": "<rootDir>//packages/mapped-system/src"
-    }
   }
 }
