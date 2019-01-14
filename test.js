@@ -2,16 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import mapped, { withStyles } from './src';
+import mapped from './src';
 
 Enzyme.configure({adapter: new Adapter()});
 
 const Box = mapped({
   size: 'box-size',
   color: value => `is-${value}-color`
-}, withStyles({
-  align: 'textAlign'
-}));
+});
 
 Box.propTypes = {
   base: PropTypes.string,
@@ -82,11 +80,4 @@ test('Arrays prefix breakpoints md and lg at indexes 1 and 2.', () => {
 test('Accepts functions as mappings.', () => {
   const a = shallow(<Box color="primary" />);
   expect(a.html()).toEqual('<div class="is-primary-color"></div>');  
-});
-
-test('withStyles maps props to styles.', () => {
-  const a = shallow(<Box align="left" />);
-  const b = shallow(<Box align="left" blacklist={['align']} />);
-  expect(a.html()).toEqual('<div align="left" style="text-align:left"></div>'); 
-  expect(b.html()).toEqual('<div style="text-align:left"></div>');  
 });

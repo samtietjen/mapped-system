@@ -44,5 +44,3 @@ const getter = ({breakpoint, root, value}) => {
 }
 
 export default mapper({ breakpoints, getter });
-
-export { default as withStyles } from './add-ons/withStyles';
