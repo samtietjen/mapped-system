@@ -1,5 +1,8 @@
-# Mapped Classes
-Convert objects into consistent class name strings. 
+<h1>Mapped Classes</h1>
+
+<p>
+Convert objects into consistent class name strings.
+</p>
 
 ## Installation
 ```shell
@@ -13,9 +16,11 @@ import createMapper from '@samtietjen/mapped-classes';
 const mapper = createMapper({
   breakpoints: [null, 'md', 'lg'],
   mappings: { fontSize: 'font-size', padding: 'p' },
-  getter: ({ breakpoint, root, value }) => [breakpoint, root, value]
-    .filter(x => x && value !== false || x === 0)
-    .join('-')
+  getter: ({ breakpoint, root, value }) => (
+    [breakpoint, root, value]
+      .filter(x => x || x === 0)
+      .join('-') 
+  )
 });
  
 const classes = mapper({ 

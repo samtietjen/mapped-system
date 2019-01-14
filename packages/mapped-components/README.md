@@ -1,22 +1,26 @@
 # Mapped Components
-A utility for building React components that map to your stylesheet.  
+
+A utility for building components that map to your stylesheet.  
+
+<p><sub><strong>Work in Progress.</strong> Better docs coming soon.</sub></p>
 
 ## Installation
 ```shell
 npm i @samtietjen/mapped-components --save
 ```
-> **Caution!** This package is still very experimental. 👨‍🔬
 
 ## Usage
-```jsx
+```js
 import PropTypes from 'prop-types';
 import mapper from '@samtietjen/mapped-components';
 
 const mapped = mapper({
   breakpoints: [null, 'md', 'lg'],
-  getter: ({ breakpoint, root, value }) => [breakpoint, root, value]
-    .filter(x => x && value !== false || x === 0)
-    .join('-')
+  getter: ({ breakpoint, root, value }) => (
+    [breakpoint, root, value]
+      .filter(x => x || x === 0)
+      .join('-')
+  )
 });
 
 const Text = mapped({
@@ -25,43 +29,65 @@ const Text = mapped({
 
 Text.propTypes = {
   tag: PropTypes.string,
-  base: PropTypes.string,
   size: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.array
   ])
 }
 
+// Uses a built-in utility prop
 Text.defaultProps = {
-  tag: 'p',
-  base: 'text'
+  tag: 'p'
 }
-
-render (
-  <Text size={[1, null, 3]} /> 
-  // <p class="text text-size-1 lg-text-size-3"></p>
-);
 ```
 
-## Extending
+`Text` uses `size` to append a number to `text-size`.
+
 ```jsx
-const Heading = mapped({
-  ...Text.mappings,
-  color: 'text-color'
-);
+<Text size={1} /> 
+// <p class="text-size-1"></p>
+```
 
-Heading.propTypes = {
-  ...Text.propTypes,
-  color: PropTypes.string
-}
+Arrays add breakpoints based on the value's index position.
 
-Heading.defaultProps = {
-  base: 'heading',
-  tag: 'h2'
-}
+```jsx
+<Text size={[0, 1, 2]} /> 
+// <p class="text-size-0 md-text-size-1 lg-text-size-2"></p>
+```
 
-<Heading size={1} color="black" />
-// <h2 class="heading text-size-1 text-color-black"></h2>
+## Utilities
+Each component includes a set of utility props:
+- `base`(*string*): Prepend a class to the class list.
+- `blacklist`(*array*): Block attributes from an element.
+- `tag`(*string*): Transform the HTML tag.
+
+```jsx
+<Text base="text" size={1} /> 
+// <p class="text text-size-1"></p>
+
+<Text id="my-id" href="#" blacklist={['href']} /> 
+// <p id="my-id"></p>
+
+<Text tag="h2" /> 
+// <h2></h2>
+```
+
+## Add-ons
+Any function passed as an argument will merge its output with props.
+
+```js
+const Text = mapped({
+  size: 'text-size'
+}, ({ className, size }) => ({
+  className: className + (size > 3 && ' is-large')
+}));
+```
+
+`Text` adds `is-large` to `className` while `size > 3`.
+
+```jsx
+<Text size={4} />
+// <p class="text-size-4 is-large"></p>
 ```
 
 ## License
