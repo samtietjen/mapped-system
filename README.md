@@ -1,6 +1,6 @@
-<div align="center">
+<p align="center">
   <img src="https://samtietjen.com/static/images/mapped-system.svg" width="125px" />
-</div>
+</p>
 
 <h1 align="center">Mapped System</h1>
 
@@ -60,6 +60,7 @@ Text.defaultProps = {
 // <p class="text-size-1 is-primary-color"></p>
 ```
 
+### Rules
 The prop's type and characters may affect how it appends. [Read more](docs/rules.md)
 
 ```jsx
@@ -82,21 +83,40 @@ The prop's type and characters may affect how it appends. [Read more](docs/rules
 // <p class="text-size-1 md-text-size-2 lg-text-size-3"></p>
 ```
 
-## Utilities
-Each component includes a set of utility props. [Read More](packages/mapped-components#utilities)
+### Utilities
+Each component includes a set of utility props:
+- `base`(*string*): Prepend a class to the class list.
+- `blacklist`(*array*): Block attributes from an element.
+- `tag`(*string*): Transform the HTML tag.
 
-| Prop | Type | Description |
-| ---- | ---- | ----------- |
-| `base` | String | Prepend a class to the class list |
-| `blacklist` | Array | Block attributes from an element |
-| `tag` | String  | Transform the HTML tag |
+```jsx
+<Text base="text" size={1} /> 
+// <p class="text text-size-1"></p>
 
-## Add-Ons
-Add features by passing functions as arguments. [Read More](packages/mapped-components#add-ons)
+<Text id="my-id" href="#" blacklist={['href']} /> 
+// <p id="my-id"></p>
 
-| Add-On | Description |
-| ------ | ----------- |
-| [withStyles](src/add-ons/withStyles) | Map props to inline styles |
+<Text tag="h2" /> 
+// <h2></h2>
+```
+
+### Add-Ons
+Any function passed as an argument will merge its output with props.
+
+```js
+const Text = mapped({
+  size: 'text-size'
+}, ({ className, size }) => ({
+  className: className + (size > 3 && ' is-large')
+}));
+```
+
+`Text` adds `is-large` to `className` while `size > 3`.
+
+```jsx
+<Text size={4} />
+// <p class="text-size-4 is-large"></p>
+```
 
 ## Packages
 | Package | Description |
