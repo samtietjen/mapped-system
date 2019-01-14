@@ -29,7 +29,7 @@
 ```
 
 ## Customizing
-Write your own rules with [Mapped Components]().
+Write your own rules with [Mapped Components](../packages/mapped-components).
 
 ```js
 import mapper from '@samtietjen/mapped-components';
