@@ -98,15 +98,19 @@ Each component includes a set of utility props. [Read More](https://github.com/s
 ```
 
 ### Add-Ons
-Passing a function as an argument will merge its output with props. [Read More](https://github.com/samtietjen/mapped-system/tree/master/packages/mapped-components#add-ons)
+Any function passed as an argument will merge its output with props.
 
-```jsx
+```js
 const Text = mapped({
   size: 'text-size'
 }, ({ className, size }) => ({
   className: className + (size > 3 && ' is-large')
 }));
+```
 
+`Text` adds `is-large` to `className` while `size > 3`.
+
+```jsx
 <Text size={4} />
 // <p class="text-size-4 is-large"></p>
 ```
