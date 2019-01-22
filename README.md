@@ -18,7 +18,6 @@
   </a>
 </div>
 
-
 ## Installation
 ```shell
 npm i @samtietjen/mapped-system --save
@@ -40,7 +39,6 @@ Text.propTypes = {
   color: PropTypes.string
 }
 
-// Uses a built-in utility
 Text.defaultProps = {
   tag: 'p'
 }
@@ -86,7 +84,9 @@ The prop's type and characters may affect how it appends.
 // <p class="text-size-1 md-text-size-2 lg-text-size-3"></p>
 ```
 
-Each component includes [`base`](packages/mapped-components#base), [`blacklist`](packages/mapped-components#blacklist), and [`tag`](packages/mapped-components#tag) utilities.
+
+## Utilities
+Each component includes a [`base`](packages/mapped-components#base), [`blacklist`](packages/mapped-components#blacklist), and [`tag`](packages/mapped-components#tag) utility.
 
 ```jsx
 <Text base="text" size={1} /> 
@@ -101,6 +101,65 @@ Each component includes [`base`](packages/mapped-components#base), [`blacklist`]
 // Transform the HTML tag.
 // <h2></h2>
 ```
+
+## Tips
+<details>
+<summary>Write your own rules with <a href="packages/mapped-components">Mapped Components</a>.</summary>
+
+```js
+import mapper from '@samtietjen/mapped-components';
+
+const mapped = mapper({
+  breakpoints: [null, 'md', 'lg'],
+  getter: ({ breakpoint, root, value }) => (
+    // Return these three segments as a string.
+    // e.g. [breakpoint, root, value].join('-')
+  )
+});
+```
+
+</details>
+
+<details>
+<summary>Create <a href="packages/mapped-components#add-ons">add-ons</a> by passing functions as arguments.</summary>
+
+```jsx
+import mapped from '@samtietjen/mapped-system';
+
+const Text = mapped({
+  size: 'text-size'
+}, ({ className, size }) => ({
+  className: className + (size > 3 && ' is-large')
+}));
+
+<Text size={4} />
+// Adds `is-large` to `className` while `size > 3`.
+// <p class="text-size-4 is-large"></p>
+```
+
+</details>
+
+
+<details>
+<summary>Add element attributes to propTypes.</summary>
+
+```jsx
+import PropTypes from 'prop-types';
+import mapped from '@samtietjen/mapped-system';
+
+const Image = mapped({
+  size: 'image-size'
+});
+
+Image.propTypes = {
+  size: PropTypes.number,
+  src: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired
+}
+```
+
+</details>
+
 
 ## Packages
 | Package | Stability |
