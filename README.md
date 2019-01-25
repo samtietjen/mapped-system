@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://samtietjen.com/static/images/mapped-system.svg" width="125px" />
+  <img src="https://samtietjen.com/static/images/mapped-system.svg" width="100px" />
 </div>
 
 <h1 align="center">Mapped System</h1>
@@ -8,7 +8,7 @@
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.2.1-black.svg">
+    <img src="https://img.shields.io/badge/npm-v0.3.0-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -24,142 +24,107 @@ npm i @samtietjen/mapped-system --save
 ```
 
 ## Usage
-```js
+Create a component by pairing props (i.e. `size`) with class names (i.e. `box-size`).
+
+```jsx
 import PropTypes from 'prop-types';
 import mapped from '@samtietjen/mapped-system';
 
-const Text = mapped({
-  size: 'text-size',
-  color: value => `is-${value}-color`
+const Box = mapped({
+  size: 'box-size'
 });
 
-Text.propTypes = {
+Box.propTypes = {
+  base: PropTypes.string,
+  blacklist: PropTypes.string,
   tag: PropTypes.string,
-  size: PropTypes.number,
-  color: PropTypes.string
-}
-
-Text.defaultProps = {
-  tag: 'p'
+  size: PropTypes.any
 }
 ```
 
-`Text` uses `size` and `color` to create class names.
+Props will modify these class names by appending values to them.
 
 ```jsx
-<Text size={1} />
-// Use `size` to append a number to `text-size`.
-// <p class="text-size-1"></p>
+<Box size={1} />
+// Segments are separated by a dash.
+// <div class="text-size-1"></div>
 
-<Text color="primary" />
-// Use `color` to pass a string to a function.
-// <p class="is-primary-color"></p>
-```
-
-The prop's type and characters may affect how it appends.
-
-```jsx
-<Text size="100%" />
+<Box size="100%" />
 // Percentage signs convert to `p`.
-// <p class="text-size-100p"></p> 
+// <div class="text-size-100p"></div>
 
-<Text size={2.5} />
+<Box size={2.5} />
 // Floats round to the nearest integer.
-// <p class="text-size-3"></p>
+// <div class="text-size-3"></div>
 
-<Text size={1/3} />
+<Box size={1/3} />
 // Numbers between `0` and `1` convert to percentages.
-// <p class="text-size-33p"></p> 
+// <div class="text-size-33p"></div>
 
-<Text size={true} />
+<Box size={true} />
 // Booleans add the class name while `true`.
-// <p class="text-size"></p>
+// <div class="text-size"></div>
 
-<Text size={{large: true, children: 1}} />
+<Box size={{large: true, children: 1}} />
 // Objects prefix keys to values.
-// <p class="text-size-large text-size-children-1"></p>
+// <div class="text-size-large text-size-children-1"></div>
 
-<Text size={[1, 2, 3]} />
+<Box size={[1, 2, 3]} />
 // Arrays prefix breakpoints `md` and `lg` at indexes `1` and `2`.
-// <p class="text-size-1 md-text-size-2 lg-text-size-3"></p>
+// <div class="text-size-1 md-text-size-2 lg-text-size-3"></div>
+
+<Box size={() => 1 + 2} />
+// Functions execute and add their result.
+// <div class="text-size-3"></div>
 ```
 
-
-## Utilities
-Each component includes a [`base`](packages/mapped-components#base), [`blacklist`](packages/mapped-components#blacklist), and [`tag`](packages/mapped-components#tag) utility.
+Each component includes [`base`](packages/mapped-components#base), [`blacklist`](packages/mapped-components#blacklist), and [`tag`](packages/mapped-components#tag) utilities.
 
 ```jsx
-<Text base="text" size={1} /> 
+<Box size={1} base="box" /> 
 // Prepend a class to the class list.
-// <p class="text text-size-1"></p>
+// <div class="box box-size-1"></div>
 
-<Text id="my-id" href="#" blacklist={['href']} /> 
+<Box href="#" blacklist={['href']} /> 
 // Block attributes from an element.
-// <p id="my-id"></p>
+// <div></div>
 
-<Text tag="h2" /> 
+<Box tag="h2" /> 
 // Transform the HTML tag.
 // <h2></h2>
 ```
 
-## Tips
-<details>
-<summary>Write your own rules with <a href="packages/mapped-components">Mapped Components</a>.</summary>
+### Advanced
 
-```js
-import mapper from '@samtietjen/mapped-components';
-
-const mapped = mapper({
-  breakpoints: [null, 'md', 'lg'],
-  getter: ({ breakpoint, root, value }) => (
-    // Return these three segments as a string.
-    // e.g. [breakpoint, root, value].join('-')
-  )
-});
-```
-
-</details>
-
-<details>
-<summary>Create <a href="packages/mapped-components#add-ons">add-ons</a> by passing functions as arguments.</summary>
+Functions can be used to handle complex styles.
 
 ```jsx
-import mapped from '@samtietjen/mapped-system';
-
-const Text = mapped({
-  size: 'text-size'
-}, ({ className, size }) => ({
-  className: className + (size > 3 && ' is-large')
+const Box = mapped({
+  width: n => n + 'w'
+}, ({ className, width }) => ({
+  className: className + (width > 3 && ' is-wide')
 }));
 
-<Text size={4} />
-// Adds `is-large` to `className` while `size > 3`.
-// <p class="text-size-4 is-large"></p>
-```
-
-</details>
-
-
-<details>
-<summary>Add element attributes to propTypes.</summary>
-
-```jsx
-import PropTypes from 'prop-types';
-import mapped from '@samtietjen/mapped-system';
-
-const Image = mapped({
-  size: 'image-size'
-});
-
-Image.propTypes = {
-  size: PropTypes.number,
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired
+Box.propTypes = {
+  width: PropTypes.string
 }
 ```
 
-</details>
+Mapping a prop to a function will pass its value as an argument.
 
+```jsx
+<Box width={1} />
+// 1 + w = 1w
+// <div class="1w"></div>
+```
+
+Passing a function as an argument will merge its output with props.
+
+```jsx
+<Box width={4} />
+// Adds 'is-wide' while width > 3.
+// <div class="4w is-wide"></div>
+```
 
 ## Packages
 | Package | Stability |
@@ -167,8 +132,9 @@ Image.propTypes = {
 | [Mapped Classes](packages/mapped-classes) | **Stable** |
 | [Mapped Components](packages/mapped-components) | Experimental |
 
-## Credits
-Inspired by [Brent Jackson](http://jxnblk.com/)'s [Styled System](https://github.com/jxnblk/styled-system) and [Diego Haz](https://twitter.com/diegohaz)'s [Singel](https://github.com/diegohaz/singel).
+## Inspiration
+- [Brent Jackson](http://jxnblk.com/)'s [Styled System](https://github.com/jxnblk/styled-system)
+- [Diego Haz](https://twitter.com/diegohaz)'s [Singel](https://github.com/diegohaz/singel)
 
 ## License
 MIT © [Sam Tietjen](https://samtietjen.com)
