@@ -77,7 +77,12 @@ test('Arrays prefix breakpoints md and lg at indexes 1 and 2.', () => {
   expect(e.html()).toEqual('<div class="box-size-1 lg-box-size-3"></div>');  
 });
 
+test('Functions execute and add their result.', () => {
+  const a = shallow(<Box size={() => 1 + 2} />);
+  expect(a.html()).toEqual('<div class="box-size-3"></div>');  
+});
+
 test('Accepts functions as mappings.', () => {
   const a = shallow(<Box color="primary" />);
-  expect(a.html()).toEqual('<div class="is-primary-color"></div>');  
+  expect(a.html()).toEqual('<div class="is-primary-color"></div>');
 });

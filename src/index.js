@@ -29,13 +29,16 @@ const getter = ({breakpoint, root, value}) => {
     return result.filter(x => x).join(' ');
   }
 
-  const next = typeof(value) === 'string'
+  const type = typeof(value);
+  const next = type === 'string'
     ? String(value).replace(/%/g, 'p')
-    : typeof(value) === 'number'
+    : type === 'number'
       ? (value > 0 && value < 1) 
         ? truncate(value*100)+'p' 
         : truncate(value)
-      : null
+      : type === 'function'
+        ? value()
+        : null
 
   return [breakpoint]
     .concat(typeof(root) === 'function' ? [root(next)] : [root, next])
