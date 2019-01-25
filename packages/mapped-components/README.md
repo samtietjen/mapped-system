@@ -1,8 +1,18 @@
 # Mapped Components
 
-A utility for building components that map to your stylesheet.  
+<p>
+  <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
+    <img src="https://img.shields.io/badge/npm-v0.13.0-black.svg">
+  </a>
+  <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
+    <img src="https://img.shields.io/badge/stability-experimental-black.svg">
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/license-MIT-black.svg">
+  </a>
+</p>
 
-<p><sub><strong>Work in Progress.</strong> Better docs coming soon.</sub></p>
+A utility for building components that map to your stylesheet.  
 
 ## Installation
 ```shell
@@ -23,59 +33,74 @@ const mapped = mapper({
   )
 });
 
-const Text = mapped({
-  size: 'text-size'
+const Box = mapped({
+  size: 'box-size'
 });
 
-Text.propTypes = {
+Box.propTypes = {
+  base: PropTypes.string,
+  blacklist: PropTypes.array,
   tag: PropTypes.string,
   size: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.array
   ])
 }
-
-// Uses a built-in utility prop
-Text.defaultProps = {
-  tag: 'p'
-}
 ```
 
-`Text` uses `size` to append a number to `text-size`.
+`Box` uses `size` to append a number to `box-size`.
 
 ```jsx
-<Text size={1} /> 
-// <p class="text-size-1"></p>
+<Box size={1} /> 
+// <div class="box-size-1"></div>
 ```
 
 Arrays add breakpoints based on the value's index position.
 
 ```jsx
-<Text size={[0, 1, 2]} /> 
-// <p class="text-size-0 md-text-size-1 lg-text-size-2"></p>
+<Box size={[0, 1, 2]} /> 
+// <div class="box-size-0 md-box-size-1 lg-box-size-2"></div>
 ```
 
 ## Utilities
-Each component includes a set of utility props:
-- `base`(*string*): Prepend a class to the class list.
-- `blacklist`(*array*): Block attributes from an element.
-- `tag`(*string*): Transform the HTML tag.
+Each component includes a set of built-in utility props:
+
+### base
+- Type: **String**
+
+Prepend a class to the class list.
 
 ```jsx
-<Text base="text" size={1} /> 
-// <p class="text text-size-1"></p>
+<Box base="box" size={1} /> 
+// <div class="box box-size-1"></div>
+```
 
-<Text id="my-id" href="#" blacklist={['href']} /> 
-// <p id="my-id"></p>
+### blacklist
+- Type: **Array**
 
-<Text tag="h2" /> 
-// <h2></h2>
+Block attributes from an element.
+
+```jsx
+<Box id="my-id" href="#" blacklist={['href']} /> 
+// <div id="my-id"></div>
+```
+
+### tag
+- Type: **String**
+- Default: `div`
+
+Transform the HTML tag.
+
+```jsx
+<Box tag="section" /> 
+// <section></section>
 ```
 
 ## Add-ons
+
 Any function passed as an argument will merge its output with props.
 
-```js
+```jsx
 const Text = mapped({
   size: 'text-size'
 }, ({ className, size }) => ({

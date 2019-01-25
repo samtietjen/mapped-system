@@ -1,31 +1,22 @@
-<p align="center">
-  <img src="https://samtietjen.com/static/images/mapped-system.svg" width="125px" />
-</p>
+<div align="center">
+  <img src="https://samtietjen.com/static/images/mapped-system.svg" width="100px" />
+</div>
 
 <h1 align="center">Mapped System</h1>
 
-<p align="center">
+<p align="center"><a href="https://medium.freecodecamp.org/introducing-the-single-element-pattern-dfbd2c295c5d">Single element</a> React components that map to your stylesheet.</strong></p>
+
+<div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.2.1-black.svg?style=flat-square">
+    <img src="https://img.shields.io/badge/npm-v0.3.0-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
-    <img src="https://img.shields.io/badge/stability-experimental-black.svg?style=flat-square">
-  </a>
-  <a href="https://reactjs.org/">
-    <img src="https://img.shields.io/badge/library-React-black.svg?style=flat-square">
+    <img src="https://img.shields.io/badge/stability-experimental-black.svg">
   </a>
   <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/badge/license-MIT-black.svg?style=flat-square">
+    <img src="https://img.shields.io/badge/license-MIT-black.svg">
   </a>
-</p>
-
-<p align="center">
-Create <a href="https://medium.freecodecamp.org/introducing-the-single-element-pattern-dfbd2c295c5d">single element</a> components that map to your stylesheet.</strong>
-</p>
-
-<p align="center">
-<sub><strong>Work in Progress.</strong> Send <a href="https://github.com/samtietjen">me</a> your feedback!</sub>
-</p>
+</div>
 
 ## Installation
 ```shell
@@ -33,96 +24,117 @@ npm i @samtietjen/mapped-system --save
 ```
 
 ## Usage
+Create a component by pairing props (i.e. `size`) with class names (i.e. `box-size`).
+
 ```jsx
 import PropTypes from 'prop-types';
 import mapped from '@samtietjen/mapped-system';
 
-const Text = mapped({
-  size: 'text-size',
-  color: value => `is-${value}-color`
+const Box = mapped({
+  size: 'box-size'
 });
 
-Text.propTypes = {
+Box.propTypes = {
+  base: PropTypes.string,
+  blacklist: PropTypes.string,
   tag: PropTypes.string,
-  size: PropTypes.number,
-  color: PropTypes.string
-}
-
-Text.defaultProps = {
-  tag: 'p'
+  size: PropTypes.any
 }
 ```
 
-`Text` uses `size` and `color` to create class names.
+Props will modify these class names by appending values to them.
 
 ```jsx
-<Text size={1} color="primary" />
-// <p class="text-size-1 is-primary-color"></p>
+<Box size={1} />
+// Segments are separated by a dash.
+// <div class="text-size-1"></div>
+
+<Box size="100%" />
+// Percentage signs convert to `p`.
+// <div class="text-size-100p"></div>
+
+<Box size={2.5} />
+// Floats round to the nearest integer.
+// <div class="text-size-3"></div>
+
+<Box size={1/3} />
+// Numbers between `0` and `1` convert to percentages.
+// <div class="text-size-33p"></div>
+
+<Box size={true} />
+// Booleans add the class name while `true`.
+// <div class="text-size"></div>
+
+<Box size={{large: true, children: 1}} />
+// Objects prefix keys to values.
+// <div class="text-size-large text-size-children-1"></div>
+
+<Box size={[1, 2, 3]} />
+// Arrays prefix breakpoints `md` and `lg` at indexes `1` and `2`.
+// <div class="text-size-1 md-text-size-2 lg-text-size-3"></div>
+
+<Box size={() => 1 + 2} />
+// Functions execute and add their result.
+// <div class="text-size-3"></div>
 ```
 
-### Rules
-The prop's type and characters may affect how it appends. [Read more](docs/rules.md)
+Each component includes [`base`](packages/mapped-components#base), [`blacklist`](packages/mapped-components#blacklist), and [`tag`](packages/mapped-components#tag) utilities.
 
 ```jsx
-<Text size="100%" />
-// <p class="text-size-100p"></p> 
+<Box size={1} base="box" /> 
+// Prepend a class to the class list.
+// <div class="box box-size-1"></div>
 
-<Text size={2.5} />
-// <p class="text-size-3"></p>
+<Box href="#" blacklist={['href']} /> 
+// Block attributes from an element.
+// <div></div>
 
-<Text size={1/3} />
-// <p class="text-size-33p"></p> 
-
-<Text size={true} />
-// <p class="text-size"></p>
-
-<Text size={{large: true, children: 1/2}} />
-// <p class="text-size-large text-size-children-50p"></p>
-
-<Text size={[1, 2, 3]} />
-// <p class="text-size-1 md-text-size-2 lg-text-size-3"></p>
-```
-
-### Utilities
-Each component includes a set of utility props. [Read More](https://github.com/samtietjen/mapped-system/tree/master/packages/mapped-components#utilities)
-
-```jsx
-<Text base="text" size={1} /> 
-// <p class="text text-size-1"></p>
-
-<Text id="my-id" href="#" blacklist={['href']} /> 
-// <p id="my-id"></p>
-
-<Text tag="h2" /> 
+<Box tag="h2" /> 
+// Transform the HTML tag.
 // <h2></h2>
 ```
 
-### Add-Ons
-Any function passed as an argument will merge its output with props.
+### Advanced
 
-```js
-const Text = mapped({
-  size: 'text-size'
-}, ({ className, size }) => ({
-  className: className + (size > 3 && ' is-large')
-}));
-```
-
-`Text` adds `is-large` to `className` while `size > 3`.
+Functions can be used to handle complex styles.
 
 ```jsx
-<Text size={4} />
-// <p class="text-size-4 is-large"></p>
+const Box = mapped({
+  width: n => n + 'w'
+}, ({ className, width }) => ({
+  className: className + (width > 3 && ' is-wide')
+}));
+
+Box.propTypes = {
+  width: PropTypes.string
+}
+```
+
+Mapping a prop to a function will pass its value as an argument.
+
+```jsx
+<Box width={1} />
+// 1 + w = 1w
+// <div class="1w"></div>
+```
+
+Passing a function as an argument will merge its output with props.
+
+```jsx
+<Box width={4} />
+// Adds 'is-wide' while width > 3.
+// <div class="4w is-wide"></div>
 ```
 
 ## Packages
-| Package | Description |
-| ------- | ----------- |
-| [Mapped Classes](https://github.com/samtietjen/mapped-system/tree/master/packages/mapped-classes) | Objects to class name strings |
-| [Mapped Components](https://github.com/samtietjen/mapped-system/tree/master/packages/mapped-components) | Components that map to your stylesheet |
+| Package | Stability |
+| ------- | --------- |
+| [Mapped Classes](packages/mapped-classes) | **Stable** |
+| [Mapped Components](packages/mapped-components) | Experimental |
 
-## Credits
-Inspired by [Brent Jackson](http://jxnblk.com/)'s [Styled System](https://github.com/jxnblk/styled-system) and [Diego Haz](https://twitter.com/diegohaz)'s [Singel](https://github.com/diegohaz/singel).
+## Inspiration
+- [Brent Jackson](http://jxnblk.com/)'s [Styled System](https://github.com/jxnblk/styled-system)
+- [Diego Haz](https://twitter.com/diegohaz)'s [Singel](https://github.com/diegohaz/singel)
 
 ## License
 MIT © [Sam Tietjen](https://samtietjen.com)

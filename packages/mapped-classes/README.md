@@ -1,8 +1,15 @@
 <h1>Mapped Classes</h1>
 
 <p>
-Convert objects into consistent class name strings.
+  <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
+    <img src="https://img.shields.io/badge/npm-v1.3.1-black.svg">
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/license-MIT-black.svg">
+  </a>
 </p>
+
+Convert objects into consistent class name strings.
 
 ## Installation
 ```shell
