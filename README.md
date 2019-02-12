@@ -8,7 +8,7 @@
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.3.0-black.svg">
+    <img src="https://img.shields.io/badge/npm-v0.3.1-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -47,35 +47,35 @@ Props will modify these class names by appending values to them.
 ```jsx
 <Box size={1} />
 // Segments are separated by a dash.
-// <div class="text-size-1"></div>
+// <div class="box-size-1"></div>
 
 <Box size="100%" />
 // Percentage signs convert to `p`.
-// <div class="text-size-100p"></div>
+// <div class="box-size-100p"></div>
 
 <Box size={2.5} />
 // Floats round to the nearest integer.
-// <div class="text-size-3"></div>
+// <div class="box-size-3"></div>
 
 <Box size={1/3} />
 // Numbers between `0` and `1` convert to percentages.
-// <div class="text-size-33p"></div>
+// <div class="box-size-33p"></div>
 
 <Box size={true} />
 // Booleans add the class name while `true`.
-// <div class="text-size"></div>
+// <div class="box-size"></div>
 
 <Box size={{large: true, children: 1}} />
 // Objects prefix keys to values.
-// <div class="text-size-large text-size-children-1"></div>
+// <div class="box-size-large box-size-children-1"></div>
 
 <Box size={[1, 2, 3]} />
 // Arrays prefix breakpoints `md` and `lg` at indexes `1` and `2`.
-// <div class="text-size-1 md-text-size-2 lg-text-size-3"></div>
+// <div class="box-size-1 md-box-size-2 lg-box-size-3"></div>
 
 <Box size={() => 1 + 2} />
 // Functions execute and add their result.
-// <div class="text-size-3"></div>
+// <div class="box-size-3"></div>
 ```
 
 Each component includes [`base`](packages/mapped-components#base), [`blacklist`](packages/mapped-components#blacklist), and [`tag`](packages/mapped-components#tag) utilities.
