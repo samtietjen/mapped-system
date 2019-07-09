@@ -1,7 +1,7 @@
 {
-  "name": "@samtietjen/mapped-classes",
-  "version": "1.3.1",
-  "description": "Convert objects into class names",
+  "name": "mapped-classes",
+  "version": "1.0.3",
+  "description": "Convert objects into consistent class name strings",
   "main": "dist/index.js",
   "repository": {
     "type": "git",

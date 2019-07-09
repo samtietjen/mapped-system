@@ -1,14 +1,14 @@
 <div align="center">
-  <img src="https://samtietjen.com/static/images/mapped-system.svg" width="100px" />
+  <img src="https://tietjeninteractive.com/projects/mapped-system/mapped-system.svg" width="100px" />
 </div>
 
 <h1 align="center">Mapped System</h1>
 
-<p align="center"><a href="https://medium.freecodecamp.org/introducing-the-single-element-pattern-dfbd2c295c5d">Single element</a> React components that map to your stylesheet.</strong></p>
+<p align="center"><strong>Build design systems with a simple stylesheet.</strong><br/>In development and not ready for production use.</p>
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.3.1-black.svg">
+    <img src="https://img.shields.io/badge/npm-v0.1.0-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -20,7 +20,7 @@
 
 ## Installation
 ```shell
-npm i @samtietjen/mapped-system --save
+npm i mapped-system --save
 ```
 
 ## Usage
@@ -28,21 +28,18 @@ Create a component by pairing props (i.e. `size`) with class names (i.e. `box-si
 
 ```jsx
 import PropTypes from 'prop-types';
-import mapped from '@samtietjen/mapped-system';
+import useMapper from 'mapped-system';
 
-const Box = mapped({
+const Box = useMapper({
   size: 'box-size'
 });
 
 Box.propTypes = {
-  base: PropTypes.string,
-  blacklist: PropTypes.string,
-  tag: PropTypes.string,
   size: PropTypes.any
 }
 ```
 
-Props will modify these class names by appending values to them.
+Props will append values to their class names.
 
 ```jsx
 <Box size={1} />
@@ -74,18 +71,43 @@ Props will modify these class names by appending values to them.
 // <div class="box-size-1 md-box-size-2 lg-box-size-3"></div>
 
 <Box size={() => 1 + 2} />
-// Functions execute and add their result.
+// Functions return their output.
 // <div class="box-size-3"></div>
 ```
 
+### Advanced
+
+Functions can be used to handle complex styles.
+
+```jsx
+const Box = useMapper({
+  width: n => n + 'w'
+}, ({ className, width }) => ({
+  className: className + (width > 3 && ' is-wide')
+}));
+
+Box.propTypes = {
+  width: PropTypes.number
+}
+
+<Box width={1} />
+// As a mapping it will pass its value as an argument.
+// <div class="1w"></div>
+
+<Box width={4} />
+// As an argument it will merge its output with props.
+// <div class="4w is-wide"></div>
+```
+
+## Utilities
 Each component includes [`base`](packages/mapped-components#base), [`blacklist`](packages/mapped-components#blacklist), and [`tag`](packages/mapped-components#tag) utilities.
 
 ```jsx
-<Box size={1} base="box" /> 
+<Box base="box" size={1} /> 
 // Prepend a class to the class list.
 // <div class="box box-size-1"></div>
 
-<Box href="#" blacklist={['href']} /> 
+<Box blacklist={['href']} href="#" /> 
 // Block attributes from an element.
 // <div></div>
 
@@ -94,47 +116,21 @@ Each component includes [`base`](packages/mapped-components#base), [`blacklist`]
 // <h2></h2>
 ```
 
-### Advanced
-
-Functions can be used to handle complex styles.
-
-```jsx
-const Box = mapped({
-  width: n => n + 'w'
-}, ({ className, width }) => ({
-  className: className + (width > 3 && ' is-wide')
-}));
-
-Box.propTypes = {
-  width: PropTypes.string
-}
-```
-
-Mapping a prop to a function will pass its value as an argument.
-
-```jsx
-<Box width={1} />
-// 1 + w = 1w
-// <div class="1w"></div>
-```
-
-Passing a function as an argument will merge its output with props.
-
-```jsx
-<Box width={4} />
-// Adds 'is-wide' while width > 3.
-// <div class="4w is-wide"></div>
-```
+## Roadmap
+Changes may **not** be backwards compatible.
+- [ ] CSS generation and injection for specified props.
+- [ ] Performance improvements and benchmarking.
+- [ ] Better documentation with example projects.
 
 ## Packages
+This library is made from a set of modular packages.  
+Use them to create your own rules, syntax, and systems.
+
 | Package | Stability |
 | ------- | --------- |
 | [Mapped Classes](packages/mapped-classes) | **Stable** |
 | [Mapped Components](packages/mapped-components) | Experimental |
-
-## Inspiration
-- [Brent Jackson](http://jxnblk.com/)'s [Styled System](https://github.com/jxnblk/styled-system)
-- [Diego Haz](https://twitter.com/diegohaz)'s [Singel](https://github.com/diegohaz/singel)
+| [Mapped System](packages/mapped-system) | Experimental |
 
 ## License
 MIT © [Sam Tietjen](https://samtietjen.com)

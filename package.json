@@ -1,34 +1,27 @@
 {
-  "name": "@samtietjen/mapped-system",
-  "version": "0.3.1",
-  "description": "Single element components that map to your stylesheet",
-  "main": "dist/index.js",
   "author": "Sam Tietjen",
   "license": "MIT",
-  "keywords": ["react"],
   "scripts": {
-    "build": "NODE_ENV=production babel src -d dist --config-file './babel.config.js'",
-    "prepublish": "npm run build",
-    "test": "jest"
-  },
-  "dependencies": {
-    "@samtietjen/mapped-components": "0.13.0"
+    "test": "NODE_ENV=test jest --coverage"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.1.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "jest": "^23.6.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "jest": "^24.8.0",
     "jest-cli": "^23.6.0",
-    "prop-types": "^15.6.1",
-    "react-dom": "^16.5.2",
-    "regenerator-runtime": "^0.12.1"
+    "jest-dom": "^3.5.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "regenerator-runtime": "^0.13.2"
   },
   "repository": {
     "type": "git",
