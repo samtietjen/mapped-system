@@ -22,14 +22,14 @@ test('Returns a string from multiple props.', () => {
   expect(a).toBe('font-size-1 p-1 md-p-2');  
 });
 
-test('Uses the key as-is while not a mapping.', () => {
-  const a = mapper({unlisted: 'value'});
-  expect(a).toBe('unlisted-value');  
-});
-
 test('Allows null mappings.', () => {
   const a = mapper({display: 'block'});
   expect(a).toBe('block');  
+});
+
+test('Ignores keys that are not mappings.', () => {
+  const a = mapper({unlisted: 1, padding: 2});
+  expect(a).toBe('p-2');
 });
 
 test('Ignores null values.', () => {

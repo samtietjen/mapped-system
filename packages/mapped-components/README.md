@@ -1,8 +1,8 @@
 # Mapped Components
 
 <p>
-  <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.13.0-black.svg">
+  <a href="https://www.npmjs.com/package/mapped-components">
+    <img src="https://img.shields.io/badge/npm-v0.1.2-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -12,63 +12,72 @@
   </a>
 </p>
 
-A utility for building components that map to your stylesheet.  
+**Single element React components for stylesheets.**  
+In development and not ready for production use.  
+Check out the [current roadmap](../../#roadmap).  
 
 ## Installation
 ```shell
-npm i @samtietjen/mapped-components --save
+npm i mapped-components --save
 ```
 
 ## Usage
-```js
+
+Create a mapper with an array of breakpoints and a getter function.
+
+```jsx
 import PropTypes from 'prop-types';
-import mapper from '@samtietjen/mapped-components';
+import createMapper from 'mapped-components';
 
-const mapped = mapper({
+const useMapper = createMapper({
   breakpoints: [null, 'md', 'lg'],
-  getter: ({ breakpoint, root, value }) => (
+  getter: ({ breakpoint, root, value }) =>
     [breakpoint, root, value]
-      .filter(x => x || x === 0)
-      .join('-')
-  )
+      .filter(x => x || x === 0) // Value can be 0.
+      .join('-') // Separate segments with a dash.
 });
+```
 
-const Box = mapped({
+Pass an object that pairs props with the root of a class name to use it.
+
+```jsx
+const Box = useMapper({
   size: 'box-size'
 });
 
 Box.propTypes = {
-  base: PropTypes.string,
-  blacklist: PropTypes.array,
-  tag: PropTypes.string,
   size: PropTypes.oneOfType([
     PropTypes.number,
+    PropTypes.string,
     PropTypes.array
   ])
 }
 ```
 
-`Box` uses `size` to append a number to `box-size`.
+When the prop receives a value it will use the getter to attach it to the root.
 
 ```jsx
-<Box size={1} /> 
-// <div class="box-size-1"></div>
+<Box size={0} />
+// <div class="box-size-0"></div>
+
+<Box size="large" />
+// <div class="box-size-large"></div>
 ```
 
-Arrays add breakpoints based on the value's index position.
+If the value is an array the getter will include breakpoints with matching indexes.
 
 ```jsx
-<Box size={[0, 1, 2]} /> 
-// <div class="box-size-0 md-box-size-1 lg-box-size-2"></div>
+<Box size={[1, 2, 3]} />
+// Breakpoints specified in the mapper: [null, 'md', 'lg']
+// <div class="box-size-1 md-box-size-2 lg-box-size-3"></div>
 ```
 
 ## Utilities
-Each component includes a set of built-in utility props:
+Each component includes a set of built-in utility props.  
 
 ### base
-- Type: **String**
-
 Prepend a class to the class list.
+- type: `string`
 
 ```jsx
 <Box base="box" size={1} /> 
@@ -76,43 +85,22 @@ Prepend a class to the class list.
 ```
 
 ### blacklist
-- Type: **Array**
-
 Block attributes from an element.
+- type: `array`
 
 ```jsx
-<Box id="my-id" href="#" blacklist={['href']} /> 
-// <div id="my-id"></div>
+<Box blacklist={['href']} href="#" /> 
+// <div></div>
 ```
 
 ### tag
-- Type: **String**
-- Default: `div`
-
 Transform the HTML tag.
+- type: `string`
+- default: `div`
 
 ```jsx
-<Box tag="section" /> 
-// <section></section>
-```
-
-## Add-ons
-
-Any function passed as an argument will merge its output with props.
-
-```jsx
-const Text = mapped({
-  size: 'text-size'
-}, ({ className, size }) => ({
-  className: className + (size > 3 && ' is-large')
-}));
-```
-
-`Text` adds `is-large` to `className` while `size > 3`.
-
-```jsx
-<Text size={4} />
-// <p class="text-size-4 is-large"></p>
+<Box tag="h2" /> 
+// <h2></h2>
 ```
 
 ## License

@@ -4,19 +4,25 @@ import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import mapper from './src';
 
-Enzyme.configure({adapter: new Adapter()});
+Enzyme.configure({ adapter: new Adapter() });
+
+const stringNumberOrArray = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+  PropTypes.array
+]);
 
 const mapped = mapper({
   breakpoints: [null, 'md', 'lg'],
-  getter: ({ breakpoint, root, value }) => ( 
+  getter: ({ breakpoint, root, value }) =>
     [breakpoint, root, value]
       .filter(x => x && value !== false || x === 0)
       .join('-')
-  )
 });
 
 const Text = mapped({
-  size: 'text-size'
+  size: 'text-size',
+  margin: 'm'
 });
 
 Text.propTypes = {
@@ -24,11 +30,8 @@ Text.propTypes = {
   tag: PropTypes.string,
   blacklist: PropTypes.array,
   color: PropTypes.string,
-  size: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.array
-  ])
+  margin: stringNumberOrArray,
+  size: stringNumberOrArray
 }
 
 test('Create a component.', () => {
@@ -38,7 +41,7 @@ test('Create a component.', () => {
 
 test('Accept element attributes.', () => {
   const a = shallow(<Text id="my-id" size={1} />);
-  expect(a.html()).toEqual('<div class="text-size-1" id="my-id"></div>');  
+  expect(a.html()).toEqual('<div id="my-id" class="text-size-1"></div>');  
 });
 
 test('Accepts classNames.', () => {
@@ -58,15 +61,6 @@ test('Add responsive classes when passing an array.', () => {
   expect(a.html()).toEqual('<div class="text-size-1 md-text-size-2 lg-text-size-3"></div>');  
 });
 
-test('Accepts functions as arguments.', () => {
-  const append = (a, b) => [a, b].filter(Boolean).join(' ');
-  const hasSize = ({ size, className }) => ({ className: append(className, size && 'has-size') });
-  const Comp = mapped({size: 'text-size'}, hasSize)
-  const a = shallow(<Comp size={1} />);
-  expect(a.html()).toEqual('<div class="text-size-1 has-size"></div>');  
-});
-
-
 test('Prepend a class to the class list', () => {
   const a = shallow(<Text size={1} base="comp" />);
   expect(a.html()).toEqual('<div class="comp text-size-1"></div>');  ;
@@ -82,4 +76,12 @@ test('Block attributes from an element.', () => {
   const b = shallow(<Text href="#" />);
   expect(a.html()).toEqual('<div></div>');  
   expect(b.html()).toEqual('<div href="#"></div>');  
+});
+
+test('Accepts functions as arguments.', () => {
+  const append = (a, b) => [a, b].filter(Boolean).join(' ');
+  const hasSize = ({ size, className }) => ({ className: append(className, size && 'has-size') });
+  const Comp = mapped({size: 'text-size'}, hasSize);
+  const a = shallow(<Comp size={1} />);
+  expect(a.html()).toEqual('<div class="text-size-1 has-size"></div>');  
 });

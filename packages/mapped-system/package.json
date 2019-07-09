@@ -1,7 +1,7 @@
 {
-  "name": "mapped-components",
-  "version": "0.1.2",
-  "description": "Create components that map props to class names",
+  "name": "mapped-system",
+  "version": "0.1.0",
+  "description": "Single element components that map to your stylesheet",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
@@ -12,11 +12,13 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "mapped-classes": "^1.0.2",
-    "react": "^16.8.6"
+    "@samtietjen/mapped-system": "^0.3.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.1.0"
+    "@babel/core": "^7.1.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   }
 }

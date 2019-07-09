@@ -3,16 +3,15 @@ module.exports = function (wallaby) {
     files: [
       'packages/*/src/**/*',
       '!packages/*/test.js',
-      'src/**/**/**/*',
-      '!src/**/**/*/test.js'
+      '!packages/*/tests/*'
+
     ],
     compilers: {
       "**/*.js": wallaby.compilers.babel()
     },
     tests: [
       'packages/*/test.js',
-      'src/**/*/test.js',
-      'test.js'
+      'packages/*/tests/*'
     ],
     env: {
       type: 'node',
