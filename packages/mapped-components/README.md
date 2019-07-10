@@ -14,7 +14,6 @@
 
 **Single element React components for stylesheets.**  
 In development and not ready for production use.  
-Check out the [current roadmap](../../#roadmap).  
 
 ## Installation
 ```shell
@@ -64,7 +63,7 @@ When the prop receives a value it will use the getter to attach it to the root.
 // <div class="box-size-large"></div>
 ```
 
-If the value is an array the getter will include breakpoints with matching indexes.
+If the value is an array then a responsive class will be added for each item.
 
 ```jsx
 <Box size={[1, 2, 3]} />
@@ -73,7 +72,7 @@ If the value is an array the getter will include breakpoints with matching index
 ```
 
 ## Utilities
-Each component includes a set of built-in utility props.  
+Each component includes a set of built-in utility props. If you'd like to create your own utilities try forking this repository or creating a new one using [Mapped Components](../packages/mapped-components).
 
 ### base
 Prepend a class to the class list.
