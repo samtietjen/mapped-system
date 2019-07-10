@@ -72,7 +72,7 @@ If the value is an array then a responsive class will be added for each item.
 ```
 
 ## Utilities
-Each component includes a set of built-in utility props. If you'd like to create your own utilities try forking this repository or creating a new one using [Mapped Components](../packages/mapped-components).
+Each component includes a set of built-in utility props.
 
 ### base
 Prepend a class to the class list.
