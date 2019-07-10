@@ -123,8 +123,7 @@ Changes may **not** be backwards compatible.
 - [ ] Better documentation with example projects.
 
 ## Packages
-This library is made from a set of modular packages.  
-Use them to create your own rules, syntax, and systems.
+Write your own rules and syntax using lower level packages.
 
 | Package | Stability |
 | ------- | --------- |
