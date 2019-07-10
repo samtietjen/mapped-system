@@ -63,7 +63,8 @@ When the prop receives a value it will use the getter to attach it to the root.
 // <div class="box-size-large"></div>
 ```
 
-If the value is an array then a responsive class will be added for each item.
+If the value is an array then a responsive class will be added for each item.  
+This was inspired by [Brent Jackson's approach in Styled System](https://styled-system.com/responsive-styles/).
 
 ```jsx
 <Box size={[1, 2, 3]} />
