@@ -1,4 +1,4 @@
-import mapper from '@samtietjen/mapped-components';
+import mapper from 'mapped-components';
 
 const arr = n => Array.isArray(n) ? n : [n];
 
