@@ -116,6 +116,45 @@ Each component includes [`base`](packages/mapped-components#base), [`blacklist`]
 // <h2></h2>
 ```
 
+## cssProps
+```jsx
+import PropTypes from 'prop-types';
+import useMapper from 'mapped-system';
+
+const Box = useMapper({
+  size: 'box-size'
+});
+
+Box.cssProps = {
+  size: ['height', 'width']
+}
+
+Box.defaultProps = {
+  breakpoints: ['450px', '1350px']
+}
+
+Box.propTypes = {
+  breakpoints: PropTypes.array,
+  size: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array
+  ])
+}
+
+<Box size={[1, 2]} />
+// <div class="box-size-1 md-box-size-2"></div>
+```
+
+```html
+<style type="text/css" data-classes="box-size-10px md-box-size-100px">
+  .box-size-10px { height: 10px; width: 10px; }
+
+  @media(min-width: 450px) {
+    .md-box-size-100px { height: 100px; width: 100px; }
+  }
+</style>
+```
+
 ## Roadmap
 Changes may **not** be backwards compatible.
 - [ ] CSS generation and injection for specified props.
