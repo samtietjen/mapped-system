@@ -1,6 +1,6 @@
 {
   "name": "mapped-system",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Single element components that map to your stylesheet",
   "main": "dist/index.js",
   "repository": {

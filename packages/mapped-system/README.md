@@ -2,7 +2,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.1.0-black.svg">
+    <img src="https://img.shields.io/badge/npm-v0.1.1-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -14,8 +14,7 @@
 
 **Build design systems with a simple stylesheet.**  
 In development and not ready for production use.  
-
-👋[Go here](../../) for the documentation and full set of features.
+[Read Documentation](../../README.md)
 
 ## Installation
 ```shell
