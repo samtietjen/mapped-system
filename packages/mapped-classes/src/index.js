@@ -3,13 +3,15 @@ const arr = n => Array.isArray(n) ? n : [n];
 export default ({ 
   breakpoints = [], 
   mappings = {}, 
-  getter
+  getter = () => {},
+  output = 'string'
 } = {}) => {
   const map = key => mappings[key] !== undefined ? mappings[key] : key;
 
   const fn = obj => {
-    const classNames = [];
-
+    const asArray = [];
+    const asObject = {};
+    
     for (let key in obj) {
       if(mappings[key] === undefined) continue;
 
@@ -25,11 +27,23 @@ export default ({
           value: val
         });
 
-        if(result) classNames.push(result);
+        if(result) {
+          asArray.push(result);
+          if(output === 'object') {
+            const existingValue = asObject[key]; 
+            asObject[key] = existingValue 
+              ? existingValue + ' ' + result 
+              : result;
+          }
+        }
       });
     }
 
-    return classNames.join(' ') || null;
+    return output === 'string'
+      ?  asArray.join(' ') || null 
+        : output === 'object'
+          ? asObject
+          : asArray 
   }
 
   fn.mappings = mappings;
