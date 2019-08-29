@@ -140,7 +140,7 @@ Box.propTypes = {
 }
 ```
 
-Passing a value to these props will use [emotion]() to generate and inject css.
+Passing a value to these props will use [emotion](https://emotion.sh) to generate and inject css.
 
 ```jsx
 <Box size="large" my="100px" /> 
@@ -200,7 +200,7 @@ Box.propTypes = {
 - [ ] Example projects
 
 ## Credits
-Inspired by [Brent Jackson's]() approach to [Styled System]().
+Inspired by [Brent Jackson's](https://jxnblk.com/) approach to [Styled System](https://styled-system.com/).
 
 ## License
 MIT © [Sam Tietjen](https://samtietjen.com)
