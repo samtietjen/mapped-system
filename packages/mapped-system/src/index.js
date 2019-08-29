@@ -8,7 +8,11 @@ const isObject = value => value
   
 const truncate = num => Math.trunc(Math.round(num));
 
-const breakpoints = [null, 'md', 'lg'];
+const breakpoints = [
+  { label: null, minWidth: 0 },
+  { label: 'md', minWidth: '320px' },
+  { label: 'lg', minWidth: '960px' }
+];
 
 const getter = ({breakpoint, root, value}) => {
   if(value === false) return false;
@@ -21,7 +25,7 @@ const getter = ({breakpoint, root, value}) => {
       arr(value[key])
         .forEach((value, index) => {
           result.push(getter({
-            breakpoint: breakpoints[index], 
+            breakpoint: breakpoints[index].label, 
             root: root + '-' + key,
             value
           }));
