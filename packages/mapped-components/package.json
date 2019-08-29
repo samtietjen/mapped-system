@@ -1,7 +1,7 @@
 {
   "name": "mapped-components",
-  "version": "0.1.2",
-  "description": "Create components that map props to class names",
+  "version": "0.2.0",
+  "description": "React components that build class names from props",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
@@ -12,11 +12,15 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "mapped-classes": "^1.0.2",
-    "react": "^16.8.6"
+    "@emotion/core": "^10.0.16",
+    "@emotion/is-prop-valid": "^0.8.2",
+    "@emotion/styled": "^10.0.15",
+    "mapped-classes": "^1.1.0",
+    "react": "^16.9.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.1.0"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "jest-emotion": "^10.0.14"
   }
 }
