@@ -2,7 +2,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/mapped-classes">
-    <img src="https://img.shields.io/badge/npm-v1.0.2-black.svg">
+    <img src="https://img.shields.io/badge/npm-v1.1.0-black.svg">
   </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/license-MIT-black.svg">
@@ -21,12 +21,13 @@ npm i mapped-classes --save
 import createMapper from 'mapped-classes';
 
 const useMapper = createMapper({
+  output: 'string', // Optional. Also accepts 'object' and 'array'.
   breakpoints: [null, 'md', 'lg'],
   mappings: {fontSize: 'font-size', padding: 'p'},
   getter: ({breakpoint, root, value}) =>
     [breakpoint, root, value]
       .filter(x => x || x === 0)
-      .join('-') 
+      .join('-')
 });
  
 const classNames = useMapper({ 

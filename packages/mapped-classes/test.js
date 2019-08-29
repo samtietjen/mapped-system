@@ -1,16 +1,20 @@
 import createMapper from './src';
 
-const mapper = createMapper({
-  breakpoints: [null, 'md', 'lg'],
-  mappings: { 
-    display: null, 
-    fontSize: 'font-size', 
-    padding: 'p' 
-  },
-  getter: ({ breakpoint, root, value }) => [breakpoint, root, value]
-    .filter(x => x && value !== false || x === 0)
-    .join('-')
-});
+const breakpoints = [null, 'md', 'lg'];
+
+const mappings = { 
+  display: null, 
+  fontSize: 'font-size', 
+  padding: 'p' 
+};
+
+const getter = ({ breakpoint, root, value }) => [breakpoint, root, value]
+  .filter(x => x && value !== false || x === 0)
+  .join('-')
+
+const mapper = createMapper({breakpoints, mappings, getter});
+const mapperAsObject = createMapper({breakpoints, mappings, getter, output: 'object'});
+const mapperAsArray = createMapper({breakpoints, mappings, getter, output: 'array'});
 
 test('Returns mapping for matching roots.', () => {
   const a = mapper({padding: 1});
@@ -59,4 +63,18 @@ test('Can reject while false.', () => {
 test('Accepts 0 values.', () => {
   const a = mapper({padding: 0});
   expect(a).toBe('p-0');  
+});
+
+test('Outputs as an object.', () => {
+  const a = mapperAsObject({padding: 1});
+  const b = mapperAsObject({padding: [1, 2, 3]});
+  expect(a).toEqual({ padding: 'p-1' }); 
+  expect(b).toEqual({ padding: 'p-1 md-p-2 lg-p-3' });  
+});
+
+test('Outputs as an array.', () => {
+  const a = mapperAsArray({padding: 1});
+  const b = mapperAsArray({padding: [1, 2, 3]});
+  expect(a).toEqual(['p-1']); 
+  expect(b).toEqual(['p-1', 'md-p-2', 'lg-p-3']);  
 });
