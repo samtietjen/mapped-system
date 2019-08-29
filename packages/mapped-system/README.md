@@ -2,7 +2,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.1.0-black.svg">
+    <img src="https://img.shields.io/badge/npm-v0.2.0-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -15,12 +15,13 @@
 **Build design systems with a simple stylesheet.**  
 In development and not ready for production use.  
 
-👋[Go here](../../) for the documentation and full set of features.
-
 ## Installation
 ```shell
 npm i mapped-system --save
 ```
+
+## Documentation
+[Go here](../../) for the documentation and full set of features.
 
 ## Example
 
@@ -32,6 +33,10 @@ const Box = useMapper({
   size: 'box-size',
   color: value => `is-${value}-color`
 });
+
+Box.cssProps = {
+  m: 'margin'
+}
 
 Box.propTypes = {
   size: PropTypes.any,
@@ -77,6 +82,11 @@ Box.propTypes = {
 <Box tag="section" />
 // Has a set of built-in utility props.
 // <section></section>
+
+<Box size={1} m="100px" />
+// Generates css using emotionjs.
+// <div class="box-size-1 css-0"></div>
+// .css-0 { margin: 100px; }
 ```
 
 ## License
