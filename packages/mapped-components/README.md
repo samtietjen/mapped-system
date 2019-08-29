@@ -113,7 +113,7 @@ Box.propTypes = {
 }
 ```
 
-Values passed to these props will use [emotion]() to generate css.
+Values passed to these props will use [emotion](https://emotion.sh) to generate css.
 
 ```jsx
 <Box size="large" m="10px" />
