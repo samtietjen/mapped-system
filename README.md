@@ -198,6 +198,7 @@ Box.propTypes = {
 - [ ] Performance improvements
 - [ ] Better documentation
 - [ ] Example projects
+- [ ] A cleaner approach to responsive cssProps
 
 ## Credits
 Inspired by [Brent Jackson's](https://jxnblk.com/) approach to [Styled System](https://styled-system.com/).
