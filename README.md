@@ -101,7 +101,7 @@ Box.propTypes = {
 ```
 
 ## Utilities
-Each component includes `base`, `blacklist`, and `tag` utilities. [Learn more](packages/mapped-components#utilities)
+Each component includes `base`, `blacklist`, and `tag` [utilities](packages/mapped-components#utilities).
 
 ```jsx
 <Box base="box" size={1} /> 
@@ -149,8 +149,19 @@ Passing a value to these props will use [emotion](https://emotion.sh) to generat
 // .css-0 { margin-top: 100px; margin-bottom: 100px; }
 ```
 
-### Responsive
-  To enable responsive cssProps you'll need to create a mapper with breakpoints.
+Responsive breakpoint `md` is set to `320px` and `lg` is `960px`. 
+
+```jsx
+<Box size="large" m={['100px', '200px']} /> 
+// Prepend a class to the class list.
+// <div class="box-size-large css-0"></div>
+// .css-0 { margin: '100px'; @media(min-width: 320px) { margin: 200px; } }
+```
+
+### Customizing
+
+Add custom breakpoints by creating a new mapper.
+
 ```jsx
 import PropTypes from 'prop-types';
 import { createUseMapper } from 'mapped-system';
@@ -163,27 +174,6 @@ const useMapper = createUseMapper({
   ]
 });
 ```
-Now that the mapper has the necessary breakpoint data it's ready to inject responsive styles.
-```jsx
-const Box = useMapper({
-  size: 'box-size'
-});
-
-Box.cssProps = {
-  m: 'margin',
-  my: ['margin-top', 'margin-bottom']
-}
-
-Box.propTypes = {
-  size: PropTypes.string,
-  m: PropTypes.any,
-  my: PropTypes.any
-}
-
-<Box size="large" m={['10px', '20px']} />
-// <div class="box-size-large css-0"></div>
-// .css-0 { margin: 10px; @media(min-width: 600px) { margin: 20px; } }
-```
 
 ## Packages
 
@@ -192,13 +182,6 @@ Box.propTypes = {
 | [Mapped Classes](packages/mapped-classes) | **Stable** |
 | [Mapped Components](packages/mapped-components) | Experimental |
 | [Mapped System](packages/mapped-system) | Experimental |
-
-## Roadmap
-- [x] ~~Generate and inject CSS~~
-- [ ] Performance improvements
-- [ ] Better documentation
-- [ ] Example projects
-- [ ] A cleaner approach to responsive cssProps
 
 ## Credits
 Inspired by [Brent Jackson's](https://jxnblk.com/) approach to [Styled System](https://styled-system.com/).
