@@ -12,7 +12,7 @@
   </a>
 </p>
 
-**Single element React components for stylesheets.**  
+**React components that build class names from props.**  
 In development and not ready for production use.  
 
 ## Installation
@@ -29,7 +29,11 @@ import PropTypes from 'prop-types';
 import createMapper from 'mapped-components';
 
 const useMapper = createMapper({
-  breakpoints: [null, 'md', 'lg'],
+  breakpoints: [
+    { label: null, minWidth: 0 },
+    { label: 'md', minWidth: '600px' },
+    { label: 'lg', minWidth: '1200px' }
+  ],
   getter: ({ breakpoint, root, value }) =>
     [breakpoint, root, value]
       .filter(x => x || x === 0) // Value can be 0.
@@ -64,43 +68,57 @@ When the prop receives a value it will use the getter to attach it to the root.
 ```
 
 If the value is an array then a responsive class will be added for each item.  
-This was inspired by [Brent Jackson's approach in Styled System](https://styled-system.com/responsive-styles/).
 
 ```jsx
 <Box size={[1, 2, 3]} />
-// Breakpoints specified in the mapper: [null, 'md', 'lg']
+// Breakpoint labels specified in the mapper: [null, 'md', 'lg']
 // <div class="box-size-1 md-box-size-2 lg-box-size-3"></div>
 ```
 
 ## Utilities
 Each component includes a set of built-in utility props.
 
-### base
-Prepend a class to the class list.
-- type: `string`
+- **base** – `string` – Prepend a class to the class list.
+- **blacklist** – `array` – Block attributes from an element.
+- **tag** – `string` – Transform the HTML tag.
 
 ```jsx
 <Box base="box" size={1} /> 
 // <div class="box box-size-1"></div>
-```
 
-### blacklist
-Block attributes from an element.
-- type: `array`
-
-```jsx
 <Box blacklist={['href']} href="#" /> 
 // <div></div>
-```
 
-### tag
-Transform the HTML tag.
-- type: `string`
-- default: `div`
-
-```jsx
 <Box tag="h2" /> 
 // <h2></h2>
+```
+
+## CSS Props
+Keep your stylesheet focused by generating cumbersome css.  
+```jsx
+const Box = useMapper({
+  size: 'box-size'
+});
+
+// Pairs props will css properties.
+Box.cssProp = {
+  m: 'margin',
+  mx: ['margin-left', 'margin-right']
+}
+
+Box.propTypes = {
+  size: PropTypes.string,
+  m: PropTypes.any,
+  mx: PropTypes.any
+}
+```
+
+Values passed to these props will use [emotion]() to generate css.
+
+```jsx
+<Box size="large" m="10px" />
+// <div class="box-size-large css-0"></div>
+// .css-0 { margin-left: 10px; margin-right: 10px; }
 ```
 
 ## License
