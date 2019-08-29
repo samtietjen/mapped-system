@@ -2,78 +2,76 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import mapper from './src';
+import createUseMapper from '../src';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const stringNumberOrArray = PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.number,
-  PropTypes.array
-]);
-
-const mapped = mapper({
-  breakpoints: [null, 'md', 'lg'],
+export const useMapper = createUseMapper({
+  breakpoints: [
+    { label: null, minWidth: 0 }, 
+    { label: "md", minWidth: '600px' },
+    { label: "lg", minWidth: '1000px' }
+  ],
   getter: ({ breakpoint, root, value }) =>
     [breakpoint, root, value]
       .filter(x => x && value !== false || x === 0)
       .join('-')
 });
 
-const Text = mapped({
-  size: 'text-size',
+const Box = useMapper({
+  size: 'box-size',
   margin: 'm'
 });
 
-Text.propTypes = {
+Box.propTypes = {
   base: PropTypes.string,
   tag: PropTypes.string,
   blacklist: PropTypes.array,
   color: PropTypes.string,
-  margin: stringNumberOrArray,
-  size: stringNumberOrArray
+  margin: PropTypes.any,
+  size: PropTypes.any
 }
 
 test('Create a component.', () => {
-  const a = shallow(<Text size={1}>Hello, World!</Text>);
-  expect(a.html()).toEqual('<div class="text-size-1">Hello, World!</div>');  
+  const a = shallow(<Box size={1}>Hello, World!</Box>);
+  expect(a.html()).toEqual('<div class="box-size-1">Hello, World!</div>');  
 });
 
 test('Accept element attributes.', () => {
-  const a = shallow(<Text id="my-id" size={1} />);
-  expect(a.html()).toEqual('<div id="my-id" class="text-size-1"></div>');  
+  const a = shallow(<Box id="my-id" size={1} />);
+  expect(a.html()).toEqual('<div id="my-id" class="box-size-1"></div>');  
 });
 
 test('Accepts classNames.', () => {
-  const a = shallow(<Text className="my-class" />);
-  const b = shallow(<Text className="my-class" size={1} />);
+  const a = shallow(<Box className="my-class" />);
+  const b = shallow(<Box className="my-class" size={1} />);
   expect(a.html()).toEqual('<div class="my-class"></div>');  
-  expect(b.html()).toEqual('<div class="text-size-1 my-class"></div>');  
+  expect(b.html()).toEqual('<div class="box-size-1 my-class"></div>');  
 });
 
 test('Reject null values.', () => {
-  const a = shallow(<Text size={null} />);
+  const a = shallow(<Box size={null} />);
   expect(a.html()).toEqual('<div></div>');  
 });
 
 test('Add responsive classes when passing an array.', () => {
-  const a = shallow(<Text size={[1, 2, 3]} />);
-  expect(a.html()).toEqual('<div class="text-size-1 md-text-size-2 lg-text-size-3"></div>');  
+  const a = shallow(<Box size={[1, 2, 3]} />);
+  expect(a.html()).toEqual('<div class="box-size-1 md-box-size-2 lg-box-size-3"></div>');  
 });
 
 test('Prepend a class to the class list', () => {
-  const a = shallow(<Text size={1} base="comp" />);
-  expect(a.html()).toEqual('<div class="comp text-size-1"></div>');  ;
+  const a = shallow(<Box size={1} base="comp" />);
+  expect(a.html()).toEqual('<div class="comp box-size-1"></div>');  ;
 });
 
 test('Transform the HTML tag', () => {
-  const a = shallow(<Text tag="h2" />);
+  const a = shallow(<Box tag="h2" />);
   expect(a.html()).toEqual('<h2></h2>');  
 });
 
 test('Block attributes from an element.', () => {
-  const a = shallow(<Text href="#" blacklist={['href']} />);
-  const b = shallow(<Text href="#" />);
+  const a = shallow(<Box href="#" blacklist={['href']} />);
+  const b = shallow(<Box href="#" />);
   expect(a.html()).toEqual('<div></div>');  
   expect(b.html()).toEqual('<div href="#"></div>');  
 });
@@ -81,7 +79,7 @@ test('Block attributes from an element.', () => {
 test('Accepts functions as arguments.', () => {
   const append = (a, b) => [a, b].filter(Boolean).join(' ');
   const hasSize = ({ size, className }) => ({ className: append(className, size && 'has-size') });
-  const Comp = mapped({size: 'text-size'}, hasSize);
+  const Comp = useMapper({size: 'box-size'}, hasSize);
   const a = shallow(<Comp size={1} />);
-  expect(a.html()).toEqual('<div class="text-size-1 has-size"></div>');  
+  expect(a.html()).toEqual('<div class="box-size-1 has-size"></div>');  
 });

@@ -8,13 +8,16 @@ const isObject = value => value
   
 const truncate = num => Math.trunc(Math.round(num));
 
-const breakpoints = [null, 'md', 'lg'];
+const breakpoints = [
+  { label: null, minWidth: 0 },
+  { label: 'md', minWidth: '320px' },
+  { label: 'lg', minWidth: '960px' }
+];
 
 const getter = ({breakpoint, root, value}) => {
   if(value === false) return false;
 
   // Objects recursively call the getter.
-  // E.g.{ size: { large: 1 } } = size-large-1
   if(isObject(value)) {
     let result = [];
 
@@ -22,7 +25,7 @@ const getter = ({breakpoint, root, value}) => {
       arr(value[key])
         .forEach((value, index) => {
           result.push(getter({
-            breakpoint: breakpoints[index], 
+            breakpoint: breakpoints[index].label, 
             root: root + '-' + key,
             value
           }));
@@ -32,24 +35,29 @@ const getter = ({breakpoint, root, value}) => {
     return result.filter(x => x).join(' ');
   }
 
-  // Ternary switch statement.
   const type = typeof(value);
   const next = type === 'string'
     ? String(value).replace(/%/g, 'p') // % -> p.
     : type === 'number'
       ? (value > 0 && value < 1) 
         ? truncate(value*100)+'p' // Fractions to percentages.
-        : truncate(value) // Always round numbers using truncate.
+        : truncate(value) // Always round numbers.
       : type === 'function'
         ? value() // Execute functions.
         : null
 
   return [breakpoint]
     .concat(typeof(root) === 'function' 
-      ? [root(next)] 
+      ? [root(next)] // Accepts mappings as functions.
       : [root, next])
     .filter(x => x || x === 0)
     .join('-');
 }
+
+export const createUseMapper = config => mapper({
+  breakpoints,
+  getter,
+  ...config
+});
 
 export default mapper({ breakpoints, getter });

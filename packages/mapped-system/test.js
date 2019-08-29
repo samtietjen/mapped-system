@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import mapped from './src';
+import useMapper, { createUseMapper } from './src';
 
 Enzyme.configure({adapter: new Adapter()});
 
-const Box = mapped({
+const Box = useMapper({
   size: 'box-size',
   color: value => `is-${value}-color`,
   m: 'margin'
@@ -16,7 +16,9 @@ Box.propTypes = {
   base: PropTypes.string,
   blacklist: PropTypes.array,
   tag: PropTypes.string,
-  size: PropTypes.any
+  size: PropTypes.any,
+  color: PropTypes.any,
+  m: PropTypes.any
 }
 
 test('Separates segments with a dash.', () => {
@@ -80,4 +82,20 @@ test('Functions execute and add their result.', () => {
 test('Accepts functions as mappings.', () => {
   const a = shallow(<Box color="primary" />);
   expect(a.html()).toEqual('<div class="is-primary-color"></div>');
+});
+
+test('Pass custom configs with createUseMapper', () => {
+  const customUseMapper = createUseMapper({
+    breakpoints: [
+      { label: null, minWidth: 0 },
+      { label: 'md', minWidth: '600px' },
+      { label: 'lg', minWidth: '1200px' },
+      { label: 'xlg', minWidth: '1600px' }
+    ]
+  });
+
+  const CustomBox = customUseMapper({ size: 'box-size' });
+  CustomBox.propTypes = { size: PropTypes.any }
+  const a = shallow(<CustomBox size={[1, 2, 3, 4]} />);
+  expect(a.html()).toEqual('<div class="box-size-1 md-box-size-2 lg-box-size-3 xlg-box-size-4"></div>');
 });

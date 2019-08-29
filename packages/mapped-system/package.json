@@ -1,6 +1,6 @@
 {
   "name": "mapped-system",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Single element components that map to your stylesheet",
   "main": "dist/index.js",
   "repository": {
@@ -11,14 +11,13 @@
     "build": "NODE_ENV=production babel src -d dist --config-file '../../babel.config.js'",
     "prepublish": "npm run build"
   },
-  "dependencies": {
-    "@samtietjen/mapped-system": "^0.3.1"
-  },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.1.0",
-    "prop-types": "^15.7.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5"
+  },
+  "dependencies": {
+    "mapped-components": "^0.2.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   }
 }
