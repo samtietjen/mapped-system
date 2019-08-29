@@ -8,7 +8,7 @@
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.1.0-black.svg">
+    <img src="https://img.shields.io/badge/npm-v0.2.0-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -17,6 +17,7 @@
     <img src="https://img.shields.io/badge/license-MIT-black.svg">
   </a>
 </div>
+
 
 ## Installation
 ```shell
@@ -100,7 +101,7 @@ Box.propTypes = {
 ```
 
 ## Utilities
-Each component includes [`base`](packages/mapped-components#base), [`blacklist`](packages/mapped-components#blacklist), and [`tag`](packages/mapped-components#tag) utilities.
+Each component includes `base`, `blacklist`, and `tag` utilities. [Learn more](packages/mapped-components#utilities)
 
 ```jsx
 <Box base="box" size={1} /> 
@@ -116,7 +117,9 @@ Each component includes [`base`](packages/mapped-components#base), [`blacklist`]
 // <h2></h2>
 ```
 
-## cssProps
+## CSS Props
+Pair props with css properties to create `cssProps`.
+
 ```jsx
 import PropTypes from 'prop-types';
 import useMapper from 'mapped-system';
@@ -126,43 +129,63 @@ const Box = useMapper({
 });
 
 Box.cssProps = {
-  size: ['height', 'width']
-}
-
-Box.defaultProps = {
-  breakpoints: ['450px', '1350px']
+  m: 'margin',
+  my: ['margin-top', 'margin-bottom']
 }
 
 Box.propTypes = {
-  breakpoints: PropTypes.array,
-  size: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array
-  ])
+  size: PropTypes.string,
+  m: PropTypes.any,
+  my: PropTypes.any
+}
+```
+
+Passing a value to these props will use [emotion]() to generate and inject css.
+
+```jsx
+<Box size="large" my="100px" /> 
+// Prepend a class to the class list.
+// <div class="box-size-large css-0"></div>
+// .css-0 { margin-top: 100px; margin-bottom: 100px; }
+```
+
+### Responsive
+  To enable responsive cssProps you'll need to create a mapper with breakpoints.
+```jsx
+import PropTypes from 'prop-types';
+import { createUseMapper } from 'mapped-system';
+
+const useMapper = createUseMapper({
+  breakpoints: [
+    { label: null, minWidth: 0 },
+    { label: 'md', minWidth: '600px' },
+    { label: 'lg', minWidth: '1200px' }
+  ]
+});
+```
+Now that the mapper has the necessary breakpoint data it's ready to inject responsive styles.
+```jsx
+const Box = useMapper({
+  size: 'box-size'
+});
+
+Box.cssProps = {
+  m: 'margin',
+  my: ['margin-top', 'margin-bottom']
 }
 
-<Box size={[1, 2]} />
-// <div class="box-size-1 md-box-size-2"></div>
+Box.propTypes = {
+  size: PropTypes.string,
+  m: PropTypes.any,
+  my: PropTypes.any
+}
+
+<Box size="large" m={['10px', '20px']} />
+// <div class="box-size-large css-0"></div>
+// .css-0 { margin: 10px; @media(min-width: 600px) { margin: 20px; } }
 ```
-
-```html
-<style type="text/css" data-classes="box-size-10px md-box-size-100px">
-  .box-size-10px { height: 10px; width: 10px; }
-
-  @media(min-width: 450px) {
-    .md-box-size-100px { height: 100px; width: 100px; }
-  }
-</style>
-```
-
-## Roadmap
-Changes may **not** be backwards compatible.
-- [ ] CSS generation and injection for specified props.
-- [ ] Performance improvements and benchmarking.
-- [ ] Better documentation with example projects.
 
 ## Packages
-Write your own rules and syntax using lower level packages.
 
 | Package | Stability |
 | ------- | --------- |
@@ -170,6 +193,14 @@ Write your own rules and syntax using lower level packages.
 | [Mapped Components](packages/mapped-components) | Experimental |
 | [Mapped System](packages/mapped-system) | Experimental |
 
+## Roadmap
+- [x] ~~Generate and inject CSS~~
+- [ ] Performance improvements
+- [ ] Better documentation
+- [ ] Example projects
+
+## Credits
+Inspired by [Brent Jackson's]() approach to [Styled System]().
 
 ## License
 MIT © [Sam Tietjen](https://samtietjen.com)
