@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import renderer from 'react-test-renderer'
-import { matchers } from 'jest-emotion'
+import renderer from 'react-test-renderer';
+import { matchers } from 'jest-emotion';
 import createUseMapper from '../src';
 
 // Setup the DOM.
