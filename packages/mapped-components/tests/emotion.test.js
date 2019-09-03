@@ -1,29 +1,11 @@
-import React from 'react';
+import React from "react";
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
 import renderer from 'react-test-renderer';
 import { matchers } from 'jest-emotion';
+import { render, cleanup } from '@testing-library/react';
 import createUseMapper from '../src';
 
-// Setup the DOM.
-let container;
-
-beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  document.body.removeChild(container);
-  container = null;
-});
-
-// Add 'jest-emotion' matchers.
-expect.extend(matchers);
-
-// Create the mapper.
-export const useMapper = createUseMapper({
+const useMapper = createUseMapper({
   breakpoints: [
     { label: null, minWidth: 0 }, 
     { label: "md", minWidth: '600px' },
@@ -35,8 +17,7 @@ export const useMapper = createUseMapper({
       .join('-')
 });
 
-// Create the component.
-const Box = useMapper({
+export const Box = useMapper({
   size: 'box-size'
 });
 
@@ -47,92 +28,56 @@ Box.cssProps = {
 }
 
 Box.propTypes = {
-  tag: PropTypes.string,
+  size: PropTypes.any,
   p: PropTypes.any,
   m: PropTypes.any,
-  my: PropTypes.any,
-  size: PropTypes.any
+  my: PropTypes.any
 }
 
-// Run the tests.
-test('Renders single properties.', () => {
-  const tree = renderer
-    .create(<Box m="100px" p="10px">Hello, World!</Box>)
-    .toJSON()
+afterEach(cleanup);
 
-  expect(tree).toHaveStyleRule('padding', '10px');
-  expect(tree).toHaveStyleRule('margin', '100px');
-});
+expect.extend(matchers);
 
-test('Renders responsive styles.', () => {
-  const tree = renderer
-    .create(<Box m={["10px", "20px", "30px"]}>Hello, World!</Box>)
-    .toJSON()
+const createJson = Comp => renderer.create(Comp).toJSON();
 
-    expect(tree).toHaveStyleRule('margin', '10px');
-
-    expect(tree).toHaveStyleRule('margin', '20px', { 
-      media: '(min-width: 600px)' 
-    });
-
-    expect(tree).toHaveStyleRule('margin', '30px', { 
-      media: '(min-width: 1000px)' 
-    });
-});
-
-test('Adds mapped class names.', () => {
-  const Component = () => (
-    <Box size="large" m="100px">Hello, World!</Box>
-  );
-  
-  act(() => {
-    ReactDOM.render(<Component />, container);
+describe('Mapped Components with Emotion', () => {
+  test('Renders single properties.', () => {
+    const json = createJson(<Box p="10px" m="100px" />);
+    expect(json).toHaveStyleRule('padding', '10px');
+    expect(json).toHaveStyleRule('margin', '100px');
+    expect(json).toMatchSnapshot();
   });
 
-  const element = container.querySelector('div');
-  expect(element.classList[0]).toBe('box-size-large');
-
-  const tree = renderer
-    .create(<Component />)
-    .toJSON();
-
-  expect(tree).toHaveStyleRule('margin', '100px');
-});
-
-test('Adds responsive mapped class names.', () => {
-  const Component = () => (
-    <Box 
-      size={["small", "medium", "large"]} 
-      m="100px">
-      Hello, World!
-    </Box>
-  );
-  
-  act(() => {
-    ReactDOM.render(<Component />, container);
+  test('Renders responsive styles.', () => {
+    const json = createJson(<Box m={["10px", "20px", "30px"]} />);
+    expect(json).toHaveStyleRule('margin', '10px');
+    expect(json).toHaveStyleRule('margin', '20px', { media: '(min-width: 600px)' });
+    expect(json).toHaveStyleRule('margin', '30px', { media: '(min-width: 1000px)' });
+    expect(json).toMatchSnapshot();  
   });
 
-  const element = container.querySelector('div');
-  expect(element.classList[0]).toBe('box-size-small');
-  expect(element.classList[1]).toBe('md-box-size-medium');
-  expect(element.classList[2]).toBe('lg-box-size-large');
-
-  const tree = renderer.create(<Component />).toJSON();
-  expect(tree).toHaveStyleRule('margin', '100px');
-});
-
-test('Includes element attributes.', () => {
-  const Component = () => (
-    <Box href="#" m="100px">Hello, World!</Box>
-  );
-  
-  act(() => {
-    ReactDOM.render(<Component />, container);
+  test('Adds mapped class names.', () => {
+    const a = createJson(<Box size="large" />);
+    const b = createJson(<Box size={[1, 2, 3]} />);
+    const classNames = a.props.className.split(' ');
+    const responsiveClassNames = b.props.className.split(' ');
+    expect(classNames.includes('box-size-large')).toBeTruthy();
+    expect(responsiveClassNames.includes('box-size-1')).toBeTruthy();
+    expect(responsiveClassNames.includes('md-box-size-2')).toBeTruthy();
+    expect(responsiveClassNames.includes('lg-box-size-3')).toBeTruthy();
+    expect(a).toMatchSnapshot();
+    expect(b).toMatchSnapshot();
   });
 
-  const element = container.querySelector('div');
-  expect(element.getAttribute('href')).toBe('#');
+  test('Includes element attributes.', () => {
+    const json = createJson(<Box href="#" />);
+    expect(json.props.href).toEqual('#');
+    expect(json).toMatchSnapshot();
+  });
 
-  const tree = renderer.create(<Component />).toJSON();
-  expect(tree).toHaveStyleRule('margin', '100px');
+  test('Forwards ref.', () => {
+    const ref = React.createRef(null);
+    const tree = render(<Box ref={ref} />);
+    expect(ref.current.tagName).toBe('DIV');
+  });
 });

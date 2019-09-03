@@ -12,14 +12,9 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "babel-plugin-emotion": "^10.0.16",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
-    "install": "^0.13.0",
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
     "jest-emotion": "^10.0.14",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
     "regenerator-runtime": "^0.13.3"
   },
   "repository": {

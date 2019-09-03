@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mapped Components with Emotion Adds mapped class names. 1`] = `
+<div
+  className="box-size-large css-7trrcd-MappedComponent e1oag0i80"
+/>
+`;
+
+exports[`Mapped Components with Emotion Adds mapped class names. 2`] = `
+<div
+  className="box-size-1 md-box-size-2 lg-box-size-3 css-7trrcd-MappedComponent e1oag0i80"
+/>
+`;
+
+exports[`Mapped Components with Emotion Includes element attributes. 1`] = `
+<div
+  className="css-7trrcd-MappedComponent e1oag0i80"
+  href="#"
+/>
+`;
+
+exports[`Mapped Components with Emotion Renders responsive styles. 1`] = `
+<div
+  className="css-bu69j4-MappedComponent e1oag0i80"
+/>
+`;
+
+exports[`Mapped Components with Emotion Renders single properties. 1`] = `
+<div
+  className="css-1pqchow-MappedComponent e1oag0i80"
+/>
+`;

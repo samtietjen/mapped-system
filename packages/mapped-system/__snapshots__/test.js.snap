@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Accepts functions as mappings. 1`] = `
+<div
+  className="is-primary-color"
+/>
+`;
+
+exports[`Arrays prefix breakpoints md and lg at indexes 1 and 2. 1`] = `
+<div
+  className="box-size-1 md-box-size-2 lg-box-size-3"
+/>
+`;
+
+exports[`Booleans add the class name while true. 1`] = `
+<div
+  className="box-size"
+/>
+`;
+
+exports[`Booleans add the class name while true. 2`] = `
+<div
+  className={null}
+/>
+`;
+
+exports[`Floats round to the nearest integer. 1`] = `
+<div
+  className="box-size-2"
+/>
+`;
+
+exports[`Floats round to the nearest integer. 2`] = `
+<div
+  className="box-size-3"
+/>
+`;
+
+exports[`Functions execute and add their result. 1`] = `
+<div
+  className="box-size-3"
+/>
+`;
+
+exports[`Numbers between 0 and 1 convert to percentages. 1`] = `
+<div
+  className="box-size-33p"
+/>
+`;
+
+exports[`Numbers between 0 and 1 convert to percentages. 2`] = `
+<div
+  className="box-size-5"
+/>
+`;
+
+exports[`Objects prefix keys to values. 1`] = `
+<div
+  className="box-size-large"
+/>
+`;
+
+exports[`Objects prefix keys to values. 2`] = `
+<div
+  className="box-size-is-large"
+/>
+`;
+
+exports[`Objects prefix keys to values. 3`] = `
+<div
+  className="box-size-is-1 md-box-size-is-2 lg-box-size-is-3"
+/>
+`;
+
+exports[`Pass custom configs with createUseMapper 1`] = `
+<div
+  className="box-size-1 md-box-size-2 lg-box-size-3 xlg-box-size-4"
+/>
+`;
+
+exports[`Percentage signs convert to p. 1`] = `
+<div
+  className="box-size-100p"
+/>
+`;
+
+exports[`Separates segments with a dash. 1`] = `
+<div
+  className="box-size-large"
+/>
+`;

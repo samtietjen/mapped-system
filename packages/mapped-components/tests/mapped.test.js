@@ -1,12 +1,11 @@
-import React from 'react';
+import React from "react";
 import PropTypes from 'prop-types';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import renderer from 'react-test-renderer';
+import { matchers } from 'jest-emotion';
+import { render, cleanup } from '@testing-library/react';
 import createUseMapper from '../src';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-export const useMapper = createUseMapper({
+const useMapper = createUseMapper({
   breakpoints: [
     { label: null, minWidth: 0 }, 
     { label: "md", minWidth: '600px' },
@@ -18,68 +17,88 @@ export const useMapper = createUseMapper({
       .join('-')
 });
 
-const Box = useMapper({
-  size: 'box-size',
-  margin: 'm'
+export const Box = useMapper({
+  size: 'box-size'
 });
 
 Box.propTypes = {
   base: PropTypes.string,
-  tag: PropTypes.string,
   blacklist: PropTypes.array,
-  color: PropTypes.string,
-  margin: PropTypes.any,
+  tag: PropTypes.string,
   size: PropTypes.any
 }
 
-test('Create a component.', () => {
-  const a = shallow(<Box size={1}>Hello, World!</Box>);
-  expect(a.html()).toEqual('<div class="box-size-1">Hello, World!</div>');  
-});
+afterEach(cleanup);
 
-test('Accept element attributes.', () => {
-  const a = shallow(<Box id="my-id" size={1} />);
-  expect(a.html()).toEqual('<div id="my-id" class="box-size-1"></div>');  
-});
+expect.extend(matchers);
 
-test('Accepts classNames.', () => {
-  const a = shallow(<Box className="my-class" />);
-  const b = shallow(<Box className="my-class" size={1} />);
-  expect(a.html()).toEqual('<div class="my-class"></div>');  
-  expect(b.html()).toEqual('<div class="box-size-1 my-class"></div>');  
-});
+const createJson = Comp => renderer.create(Comp).toJSON();
 
-test('Reject null values.', () => {
-  const a = shallow(<Box size={null} />);
-  expect(a.html()).toEqual('<div></div>');  
-});
+describe('Mapped Components', () => {
+  test('Create a component.', () => {
+    const json = createJson(<Box size={1}>Hello, World!</Box>);
+    expect(json.children).toEqual(['Hello, World!']);
+    expect(json.props.className).toEqual('box-size-1');
+    expect(json).toMatchSnapshot();
+  });
 
-test('Add responsive classes when passing an array.', () => {
-  const a = shallow(<Box size={[1, 2, 3]} />);
-  expect(a.html()).toEqual('<div class="box-size-1 md-box-size-2 lg-box-size-3"></div>');  
-});
+  test('Accept element attributes.', () => {
+    const json = createJson(<Box id="my-id" size={1} />);
+    expect(json.props.id).toEqual('my-id');
+    expect(json.props.className).toEqual('box-size-1');
+    expect(json).toMatchSnapshot();
+  });
 
-test('Prepend a class to the class list', () => {
-  const a = shallow(<Box size={1} base="comp" />);
-  expect(a.html()).toEqual('<div class="comp box-size-1"></div>');  ;
-});
+  test('Accepts classNames.', () => {
+    const a = createJson(<Box className="my-class" />);
+    const b = createJson(<Box className="my-class" size={1} />);
+    expect(a.props.className).toEqual('my-class');
+    expect(b.props.className).toEqual('box-size-1 my-class');
+    expect(a).toMatchSnapshot();
+    expect(b).toMatchSnapshot();
+  });
 
-test('Transform the HTML tag', () => {
-  const a = shallow(<Box tag="h2" />);
-  expect(a.html()).toEqual('<h2></h2>');  
-});
+  test('Reject null values.', () => {
+    const json = createJson(<Box size={null} />);
+    expect(json).toMatchSnapshot();
+  });
 
-test('Block attributes from an element.', () => {
-  const a = shallow(<Box href="#" blacklist={['href']} />);
-  const b = shallow(<Box href="#" />);
-  expect(a.html()).toEqual('<div></div>');  
-  expect(b.html()).toEqual('<div href="#"></div>');  
-});
+  test('Add responsive classes when passing an array.', () => {
+    const json = createJson(<Box size={[1, 2, 3]} />);
+    expect(json.props.className).toEqual('box-size-1 md-box-size-2 lg-box-size-3');
+    expect(json).toMatchSnapshot();
+  });
 
-test('Accepts functions as arguments.', () => {
-  const append = (a, b) => [a, b].filter(Boolean).join(' ');
-  const hasSize = ({ size, className }) => ({ className: append(className, size && 'has-size') });
-  const Comp = useMapper({size: 'box-size'}, hasSize);
-  const a = shallow(<Comp size={1} />);
-  expect(a.html()).toEqual('<div class="box-size-1 has-size"></div>');  
+  test('Prepend a class to the class list', () => {
+    const json = createJson(<Box size={1} base="box" />);
+    expect(json.props.className).toEqual('box box-size-1');
+    expect(json).toMatchSnapshot();
+  });
+
+  test('Transform the HTML tag', () => {
+    const json = createJson(<Box tag="h2" />);
+    expect(json.type).toEqual('h2');
+    expect(json).toMatchSnapshot();
+  });
+
+  test('Block attributes from an element.', () => {
+    const json = createJson(<Box href="#" blacklist={['href']} />);
+    expect(json.props.href).toBeUndefined(); 
+    expect(json).toMatchSnapshot();
+  });
+
+  test('Accepts functions as arguments.', () => {
+    const append = (a, b) => [a, b].filter(Boolean).join(' ');
+    const hasSize = ({ size, className }) => ({ className: append(className, size && 'has-size') });
+    const Comp = useMapper({size: 'box-size'}, hasSize);
+    const json = createJson(<Comp size={1} />);
+    expect(json).toMatchSnapshot();
+    expect(json.props.className).toEqual('box-size-1 has-size');  
+  });
+
+  test('Forwards ref.', () => {
+    const ref = React.createRef(null);
+    const tree = render(<Box ref={ref} />);
+    expect(ref.current.tagName).toBe('DIV')
+  });
 });

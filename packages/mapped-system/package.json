@@ -1,6 +1,6 @@
 {
   "name": "mapped-system",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Single element components that map to your stylesheet",
   "main": "dist/index.js",
   "repository": {
@@ -11,13 +11,16 @@
     "build": "NODE_ENV=production babel src -d dist --config-file '../../babel.config.js'",
     "prepublish": "npm run build"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5"
-  },
   "dependencies": {
     "mapped-components": "^0.2.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@testing-library/react": "^9.1.3",
+    "jest-emotion": "^10.0.14",
+    "react-test-renderer": "^16.9.0"
   }
 }

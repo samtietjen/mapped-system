@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
 import PropTypes from 'prop-types';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import renderer from 'react-test-renderer';
+import { matchers } from 'jest-emotion';
+import { cleanup } from '@testing-library/react';
 import useMapper, { createUseMapper } from './src';
-
-Enzyme.configure({adapter: new Adapter()});
 
 const Box = useMapper({
   size: 'box-size',
@@ -21,81 +20,104 @@ Box.propTypes = {
   m: PropTypes.any
 }
 
-test('Separates segments with a dash.', () => {
-  const a = shallow(<Box size={1} />);
-  expect(a.html()).toEqual('<div class="box-size-1"></div>');  
-});
+afterEach(cleanup);
 
-test('Percentage signs convert to p.', () => {
-  const a = shallow(<Box size="100%" />);
-  expect(a.html()).toEqual('<div class="box-size-100p"></div>');
-});
+expect.extend(matchers);
 
-test('Floats round to the nearest integer.', () => {
-  const a = shallow(<Box size={2.25} />);
-  const b = shallow(<Box size={2.5} />);
-  expect(a.html()).toEqual('<div class="box-size-2"></div>'); 
-  expect(b.html()).toEqual('<div class="box-size-3"></div>');
-});
+const createJson = Comp => renderer.create(Comp).toJSON();
 
-test('Numbers between 0 and 1 convert to percentages.', () => {
-  const a = shallow(<Box size={1/3} />);
-  const b = shallow(<Box size={10/2} />);
-  expect(a.html()).toEqual('<div class="box-size-33p"></div>');  
-  expect(b.html()).toEqual('<div class="box-size-5"></div>');  
-});
+describe('Mapped System', () => {
 
-test('Booleans add the class name while true.', () => {
-  const a = shallow(<Box size={true} />);
-  const b = shallow(<Box size={false} />);
-  expect(a.html()).toEqual('<div class="box-size"></div>');  
-  expect(b.html()).toEqual('<div></div>');  
-});
-
-test('Objects prefix keys to values.', () => {
-  const a = shallow(<Box size={{ large: true, medium: false, small: false }} />);
-  const b = shallow(<Box size={{ is: 'large' }} />);
-  const c = shallow(<Box size={{ is: [1, 2, 3] }} />);
-  expect(a.html()).toEqual('<div class="box-size-large"></div>');  
-  expect(b.html()).toEqual('<div class="box-size-is-large"></div>');  
-  expect(c.html()).toEqual('<div class="box-size-is-1 md-box-size-is-2 lg-box-size-is-3"></div>'); 
-});
-
-test('Arrays prefix breakpoints md and lg at indexes 1 and 2.', () => {
-  const a = shallow(<Box size={[1]} />);
-  const b = shallow(<Box size={[1, 2]} />);
-  const c = shallow(<Box size={[1, 2, 3]} />);
-  const d = shallow(<Box size={[1, null, 3]} />);
-  const e = shallow(<Box size={[1, false, 3]} />);
-  expect(a.html()).toEqual('<div class="box-size-1"></div>');  
-  expect(b.html()).toEqual('<div class="box-size-1 md-box-size-2"></div>');  
-  expect(c.html()).toEqual('<div class="box-size-1 md-box-size-2 lg-box-size-3"></div>');
-  expect(d.html()).toEqual('<div class="box-size-1 lg-box-size-3"></div>');  
-  expect(e.html()).toEqual('<div class="box-size-1 lg-box-size-3"></div>');  
-});
-
-test('Functions execute and add their result.', () => {
-  const a = shallow(<Box size={() => 1 + 2} />);
-  expect(a.html()).toEqual('<div class="box-size-3"></div>');  
-});
-
-test('Accepts functions as mappings.', () => {
-  const a = shallow(<Box color="primary" />);
-  expect(a.html()).toEqual('<div class="is-primary-color"></div>');
-});
-
-test('Pass custom configs with createUseMapper', () => {
-  const customUseMapper = createUseMapper({
-    breakpoints: [
-      { label: null, minWidth: 0 },
-      { label: 'md', minWidth: '600px' },
-      { label: 'lg', minWidth: '1200px' },
-      { label: 'xlg', minWidth: '1600px' }
-    ]
+  test('Separates segments with a dash.', () => {
+    const json = createJson(<Box size="large" />);
+    expect(json.props.className).toEqual('box-size-large');
+    expect(json).toMatchSnapshot();
   });
 
-  const CustomBox = customUseMapper({ size: 'box-size' });
-  CustomBox.propTypes = { size: PropTypes.any }
-  const a = shallow(<CustomBox size={[1, 2, 3, 4]} />);
-  expect(a.html()).toEqual('<div class="box-size-1 md-box-size-2 lg-box-size-3 xlg-box-size-4"></div>');
+  test('Percentage signs convert to p.', () => {
+    const json = createJson(<Box size="100%" />);
+    expect(json.props.className).toEqual('box-size-100p');
+    expect(json).toMatchSnapshot();
+  });
+
+  test('Floats round to the nearest integer.', () => {
+    const a = createJson(<Box size={2.25} />);
+    const b = createJson(<Box size={2.5} />);
+    expect(a.props.className).toEqual('box-size-2');
+    expect(b.props.className).toEqual('box-size-3');
+    expect(a).toMatchSnapshot();
+    expect(b).toMatchSnapshot();
+  });
+
+  test('Numbers between 0 and 1 convert to percentages.', () => {
+    const a = createJson(<Box size={1/3} />);
+    const b = createJson(<Box size={10/2} />);
+    expect(a.props.className).toEqual('box-size-33p');
+    expect(b.props.className).toEqual('box-size-5');
+    expect(a).toMatchSnapshot();
+    expect(b).toMatchSnapshot();
+  });
+
+  test('Booleans add the class name while true.', () => {
+    const a = createJson(<Box size={true} />);
+    const b = createJson(<Box size={false} />);
+    expect(a.props.className).toEqual('box-size');
+    expect(a).toMatchSnapshot();
+    expect(b).toMatchSnapshot();  
+  });
+
+  test('Objects prefix keys to values.', () => {
+    const a = createJson(<Box size={{ large: true, medium: false, small: false }} />);
+    const b = createJson(<Box size={{ is: 'large' }} />);
+    const c = createJson(<Box size={{ is: [1, 2, 3] }} />);
+    expect(a.props.className).toEqual('box-size-large');
+    expect(b.props.className).toEqual('box-size-is-large');
+    expect(c.props.className).toEqual('box-size-is-1 md-box-size-is-2 lg-box-size-is-3');
+    expect(a).toMatchSnapshot();
+    expect(b).toMatchSnapshot();  
+    expect(c).toMatchSnapshot();  
+  });
+
+  test('Arrays prefix breakpoints md and lg at indexes 1 and 2.', () => {
+    const a = createJson(<Box size={[1]} />);
+    const b = createJson(<Box size={[1, 2]} />);
+    const c = createJson(<Box size={[1, 2, 3]} />);
+    const d = createJson(<Box size={[1, null, 3]} />);
+    const e = createJson(<Box size={[1, false, 3]} />);
+    expect(a.props.className).toEqual('box-size-1');  
+    expect(b.props.className).toEqual('box-size-1 md-box-size-2');  
+    expect(c.props.className).toEqual('box-size-1 md-box-size-2 lg-box-size-3');
+    expect(d.props.className).toEqual('box-size-1 lg-box-size-3');  
+    expect(e.props.className).toEqual('box-size-1 lg-box-size-3'); 
+    expect(c).toMatchSnapshot();  
+  });
+
+  test('Functions execute and add their result.', () => {
+    const json = createJson(<Box size={() => 1 + 2} />);
+    expect(json.props.className).toEqual('box-size-3');  
+    expect(json).toMatchSnapshot();
+  });
+
+  test('Accepts functions as mappings.', () => {
+    const json = createJson(<Box color="primary" />);
+    expect(json.props.className).toEqual('is-primary-color');  
+    expect(json).toMatchSnapshot();
+  });
+
+  test('Pass custom configs with createUseMapper', () => {
+    const customUseMapper = createUseMapper({
+      breakpoints: [
+        { label: null, minWidth: 0 },
+        { label: 'md', minWidth: '600px' },
+        { label: 'lg', minWidth: '1200px' },
+        { label: 'xlg', minWidth: '1600px' }
+      ]
+    });
+
+    const CustomBox = customUseMapper({ size: 'box-size' });
+    CustomBox.propTypes = { size: PropTypes.any }
+    const json = createJson(<CustomBox size={[1, 2, 3, 4]} />);
+    expect(json.props.className).toEqual('box-size-1 md-box-size-2 lg-box-size-3 xlg-box-size-4');  
+    expect(json).toMatchSnapshot();
+  });
 });
