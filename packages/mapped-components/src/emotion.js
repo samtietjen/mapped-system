@@ -40,12 +40,12 @@ export default (props, mapper, cssProps, breakpoints) => {
   const styles = createStyles(props, cssProps, breakpoints)
   const cx = joinStrings(base, mcClasses, className);
 
-  const Component = styled(tag, {
+  const MappedComponent = styled(tag, {
     shouldForwardProp: prop =>
       isPropValid(prop) 
       && !cssProps[prop] 
       && !mappings[prop]
   })`${styles}`;
 
-  return <Component {...props} className={cx} />;
+  return <MappedComponent {...props} className={cx} />;
 }

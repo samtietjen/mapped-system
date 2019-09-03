@@ -1,3 +1,4 @@
+import React from 'react';
 import useMappedClasses from 'mapped-classes';
 import mapped from './mapped';
 import emotion from './emotion';
@@ -15,18 +16,18 @@ const createUseMapper = config => (mappings, callback) => {
     output: 'object'
   });
 
-  const Comp = props => {
-    const { cssProps } = Comp;
-    const next = mergeObjFunc(props, callback)
+  const MappedComponent = React.forwardRef((props, ref) => {
+    const { cssProps } = MappedComponent;
+    const next = { ...mergeObjFunc(props, callback), ref }
 
     return cssProps
       ? emotion(next, mapper, cssProps, config.breakpoints)
-      : mapped(next, mapper)
-  };
+      : mapped(next, mapper);
+  });
 
-  Comp.isMappedComponent = true;
+  MappedComponent.isMappedComponent = true;
 
-  return Comp;
+  return MappedComponent;
 };
 
 export default createUseMapper;
