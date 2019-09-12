@@ -13,14 +13,12 @@
 
 **Build design systems with a simple stylesheet.**  
 In development and not ready for production use.  
+[Full Documentation](https://github.com/samtietjen/mapped-system)
 
 ## Installation
 ```shell
 npm i mapped-system --save
 ```
-
-## Documentation
-[Go here](../../) for the documentation and full set of features.
 
 ## Example
 
