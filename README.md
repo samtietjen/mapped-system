@@ -29,7 +29,7 @@
 - [License](#License)
 
 ## Introduction
-Mapped System is made to feel like a stylesheet-driven [Styled System](https://styled-system.com/). Quickly create dynamic style props that render React elements with consistent class names. No logic required.
+Mapped System is meant to feel like a stylesheet-driven [Styled System](https://styled-system.com/). Quickly create dynamic style props that render React elements with consistent class names. No logic required.
 
 ### Use Cases
 - Teams that aren't comfortable with javascript.
