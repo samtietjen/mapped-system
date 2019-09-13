@@ -19,7 +19,7 @@
 </div>
 
 ## Introduction
-Mapped System is meant to feel like a stylesheet-driven [Styled System](https://styled-system.com/). Quickly create dynamic style props that render React elements with consistent class names. It's great for building styling APIs within teams and environments that rely on external stylesheets.
+Mapped System is meant to feel like a stylesheet-driven [Styled System](https://styled-system.com/). Quickly create dynamic style props that render React elements with consistent class names. It's great for building styling APIs within teams and environments that rely on external stylesheets. For deeper control be sure to check out [Mapped Components](packages/mapped-components).
 
 
 ## Installation
