@@ -4,7 +4,7 @@
 
 <h1 align="center">Mapped System</h1>
 
-<p align="center"><strong>Build design systems with a stylesheet.</strong><br/><small>In development and not ready for production use.</small></p>
+<p align="center"><strong>Build design systems with a stylesheet.</strong><br/>Think of it as a stylesheet-driven <a href="https://styled-system.com">Styled System.</a></p>
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
@@ -19,8 +19,15 @@
 </div>
 
 ## Introduction
-Mapped System is meant to feel like a stylesheet-driven [Styled System](https://styled-system.com/). Quickly create dynamic style props that render React elements with consistent class names. It's great for building styling APIs within teams and environments that rely on external stylesheets. For deeper control be sure to check out [Mapped Components](packages/mapped-components).
+Mapped System is a library for building styling APIs in environments that rely on external stylesheets. It's great for creating component libraries that need to accomodate third-party styles or an existing CSS code base. Further, it could prove useful to design teams that are most comfortable writing CSS in a particular way. 
 
+### Features
+- Renders consistent class names from props without logic.
+- Uses stylesheets for quick, easy theming.
+- Includes responsive `md` and `lg` breakpoints.
+- Supports [custom rules](packages/mapped-components) for matching existing code bases.
+- Inject CSS with [Emotion](https://emotion.sh) via props.
+- Weighs in at a tiny `~3kb`. 
 
 ## Installation
 
