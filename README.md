@@ -29,8 +29,10 @@ Mapped System is a library for building styling APIs in environments that rely o
 - Inject CSS with [Emotion](https://emotion.sh) via props.
 - Weighs in at a tiny `~3kb`. 
 
-## Installation
+### Try It Out
+- [Basic Example](https://codesandbox.io/s/mapped-system-basic-example-xcnbp)
 
+## Installation
 ```shell
 npm i mapped-system --save
 ```
@@ -88,7 +90,6 @@ Props will append values to their class names.
 ```
 
 ### Advanced
-
 Functions can be used to handle complex styles.
 
 ```jsx
@@ -184,6 +185,7 @@ const useMapper = createUseMapper({
 ```
 
 ## Packages
+
 | Package | Stability |
 | ------- | --------- |
 | [Mapped Classes](packages/mapped-classes) | **Stable** |
