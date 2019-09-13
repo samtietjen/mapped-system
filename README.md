@@ -18,25 +18,9 @@
   </a>
 </div>
 
-## Table of Contents
-- [Introduction](#Introduction)
-- [Installation](#Installation)
-- [Usage](#Usage)
-- [Utilities](#Utilities)
-- [CSS Props](#CSS-Props)
-- [Packages](#Packages)
-- [Credits](#Credits)
-- [License](#License)
-
 ## Introduction
-Mapped System is meant to feel like a stylesheet-driven [Styled System](https://styled-system.com/). Quickly create dynamic style props that render React elements with consistent class names. No logic required.
+Mapped System is meant to feel like a stylesheet-driven [Styled System](https://styled-system.com/). Quickly create dynamic style props that render React elements with consistent class names. It's great for building styling APIs within teams and environments that rely on external stylesheets.
 
-### Use Cases
-- Teams that aren't comfortable with javascript.
-- Environments that rely on third-party stylesheets.
-- Visually complex component libraries.
-- Building styling APIs around an existing codebase.
-- Other edge cases. Please try [Styled Components](https://styled-components.com/) and [Emotion](https://emotion.sh/) first.
 
 ## Installation
 
