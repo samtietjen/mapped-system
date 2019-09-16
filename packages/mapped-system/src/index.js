@@ -10,8 +10,8 @@ const truncate = num => Math.trunc(Math.round(num));
 
 const breakpoints = [
   { label: null, minWidth: 0 },
-  { label: 'md', minWidth: '320px' },
-  { label: 'lg', minWidth: '960px' }
+  { label: 'md', minWidth: '375px' },
+  { label: 'lg', minWidth: '1024px' }
 ];
 
 const getter = ({breakpoint, root, value}) => {

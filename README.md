@@ -8,7 +8,7 @@
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.2.0-black.svg">
+    <img src="https://img.shields.io/badge/npm-v0.2.2-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -19,18 +19,11 @@
 </div>
 
 ## Introduction
-Mapped System is a library for building styling APIs in environments that rely on external stylesheets. It's great for creating component libraries that need to accomodate third-party styles or an existing CSS code base. Further, it could prove useful to design teams that are most comfortable writing CSS in a particular way. 
+Mapped System is a library for building styling APIs in environments that rely on external stylesheets. It's great for creating component libraries that need to accomodate third-party styles, an existing code base, or a teams preference. 
 
-### Features
-- Renders consistent class names from props without logic.
-- Uses stylesheets for quick, easy theming.
-- Includes responsive `md` and `lg` breakpoints.
-- Supports [custom rules](packages/mapped-components) for matching existing code bases.
-- Inject CSS with [Emotion](https://emotion.sh) via props.
-- Weighs in at a tiny `~3kb`. 
-
-### Try It Out
-- [Basic Example](https://codesandbox.io/s/mapped-system-basic-example-xcnbp)
+### Examples
+- [Basic](https://codesandbox.io/s/mapped-system-basic-example-xcnbp)
+- ~~Advanced~~
 
 ## Installation
 ```shell
@@ -160,16 +153,16 @@ These values will generate and inject css with [emotion](https://emotion.sh).
 // .css-0 { margin-top: 100px; margin-bottom: 100px; }
 ```
 
-Responsive breakpoints are set to `320px` and `960px`. 
+Responsive breakpoints are set to `375px` and `1024px`. 
 
 ```jsx
 <Box size="large" m={['100px', '200px']} /> 
 // <div class="box-size-large css-0"></div>
-// .css-0 { margin: '100px'; @media(min-width: 320px) { margin: 200px; } }
+// .css-0 { margin: '100px'; @media(min-width: 375px) { margin: 200px; } }
 ```
 
 ### Customizing
-Modify breakpoints with `createUseMapper`.
+Create a new mapper to set custom breakpoints.
 
 ```jsx
 import PropTypes from 'prop-types';
