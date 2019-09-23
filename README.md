@@ -4,7 +4,8 @@
 
 <h1 align="center">Mapped System</h1>
 
-<p align="center"><strong>Build design systems with a stylesheet.</strong><br/>Think of it as a stylesheet-driven <a href="https://styled-system.com">Styled System.</a></p>
+<p align="center"><strong>Build design systems with stylesheets.
+</strong><br/><sub>React elements that render consistent class names via props.</sub></p>
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
@@ -19,11 +20,16 @@
 </div>
 
 ## Introduction
-Mapped System is a library for building styling APIs in environments that rely on external stylesheets. It's great for creating component libraries that need to accomodate third-party styles, an existing code base, or a teams preference. 
+Mapped System is a library for creating React elements that render class names via props. It's great for building design system APIs into component libraries that use external stylesheets. Try it out on [CodeSandbox](https://codesandbox.io/s/mapped-system-basic-example-xcnbp)! 
 
-### Examples
-- [Basic](https://codesandbox.io/s/mapped-system-basic-example-xcnbp)
-- ~~Advanced~~
+### Features
+- Renders consistent class names from props.
+- Includes responsive `md` and `lg` prefixes.
+- Supports custom rules with [Mapped Components](packages/mapped-components).
+- Injects styles with optional [CSS Props](#css-props).
+- Made to feel similar to [Styled System](https://github.com/styled-system/styled-system).
+- Weights less than `~3kb`.
+
 
 ## Installation
 ```shell
@@ -106,7 +112,7 @@ Box.propTypes = {
 ```
 
 ## Utilities
-Each component includes `base`, `blacklist`, and `tag` [utilities](packages/mapped-components#utilities).
+Each component includes `base`, `blacklist`, and `tag` [utilities](packages/mapped-components#utilities). 
 
 ```jsx
 <Box base="box" size={1} /> 
@@ -123,7 +129,7 @@ Each component includes `base`, `blacklist`, and `tag` [utilities](packages/mapp
 ```
 
 ## CSS Props
-Pair props with css properties to create `cssProps`.
+Generate and inject styles (with [Emotion](https://emotion.sh)) by pairing props with CSS properties.
 
 ```jsx
 import PropTypes from 'prop-types';
@@ -145,8 +151,7 @@ Box.propTypes = {
 }
 ```
 
-These values will generate and inject css with [emotion](https://emotion.sh).
-
+Props will append values to their CSS properties.
 ```jsx
 <Box size="large" my="100px" /> 
 // <div class="box-size-large css-0"></div>
@@ -161,8 +166,7 @@ Responsive breakpoints are set to `375px` and `1024px`.
 // .css-0 { margin: '100px'; @media(min-width: 375px) { margin: 200px; } }
 ```
 
-### Customizing
-Create a new mapper to set custom breakpoints.
+Modify these breakpoints by creating a new mapper.
 
 ```jsx
 import PropTypes from 'prop-types';
@@ -178,15 +182,13 @@ const useMapper = createUseMapper({
 ```
 
 ## Packages
-
-| Package | Stability |
-| ------- | --------- |
-| [Mapped Classes](packages/mapped-classes) | **Stable** |
-| [Mapped Components](packages/mapped-components) | Experimental |
-| [Mapped System](packages/mapped-system) | Experimental |
+| Package | Stability | Description |
+| ------- | --------- | ----------- |
+| [Mapped Classes](packages/mapped-classes) | **Stable** | Objects to consistent class name strings. |
+| [Mapped Components](packages/mapped-components) | Experimental | Write custom rules to fit your needs. |
 
 ## Credits
-Inspired by [Brent Jackson's](https://jxnblk.com/) approach to [Styled System](https://styled-system.com/).
+Inspired by [Styled System](https://github.com/styled-system/styled-system) and [Brent Jackson](https://jxnblk.com/).
 
 ## License
 MIT © [Sam Tietjen](https://samtietjen.com)
