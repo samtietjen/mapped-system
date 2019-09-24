@@ -5,9 +5,7 @@ import emotion from './emotion';
 import { mergeObjFunc } from './utilities';
 
 const createUseMapper = config => (mappings, callback) => {
-
-  const breakpoints = config.breakpoints
-    .map(b => b.label);
+  const { breakpoints } = config;
 
   const mapper = useMappedClasses({ 
     ...config,
@@ -18,14 +16,14 @@ const createUseMapper = config => (mappings, callback) => {
 
   const MappedComponent = React.forwardRef((props, ref) => {
     const { cssProps } = MappedComponent;
-    const next = { ...mergeObjFunc(props, callback), ref }
-
-    return cssProps
-      ? emotion(next, mapper, cssProps, config.breakpoints)
-      : mapped(next, mapper);
+    const propsWithCallback = { ...mergeObjFunc(props, callback), ref }
+    const constructor = cssProps ? emotion : mapped;
+    return constructor(propsWithCallback, mapper, breakpoints, cssProps);
   });
 
   MappedComponent.isMappedComponent = true;
+  MappedComponent.mappings = mappings;
+  MappedComponent.breakpoints = breakpoints;
 
   return MappedComponent;
 };

@@ -11,33 +11,33 @@ const createStyles = (props, cssProps, breakpoints) => {
     const v = props[prop];
     if(!p || !v) continue;
 
+    // Optimize for performance later.
     const properties = toArray(p);
     const values = toArray(v);
     
     values.forEach((value, index) => {
       let css = '';
-      const { minWidth } = breakpoints[index];
 
       properties.forEach(property => {
         css = css + ` ${property}: ${value};`
       });
-
-      result = minWidth
-        ? result + ` @media(min-width: ${minWidth}) {${css}}`
-        : result + css
+      
+      const { minWidth } = breakpoints[index];
+      css = minWidth ? ` @media(min-width: ${minWidth}) {${css}}` : css;
+      result += css;
     });
   }
 
   return result;
 }
 
-export default (props, mapper, cssProps, breakpoints) => {
+export default (props, mapper, breakpoints, cssProps) => {
   const { mappings } = mapper;
   const { base, className, tag = 'div' } = props;
 
   const mcObject = mapper(props);
   const mcClasses = objectToString(mcObject);
-  const styles = createStyles(props, cssProps, breakpoints)
+  const styles = createStyles(props, cssProps, breakpoints);
   const cx = joinStrings(base, mcClasses, className);
 
   const MappedComponent = styled(tag, {
