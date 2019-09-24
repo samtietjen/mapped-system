@@ -1,4 +1,6 @@
 const arr = n => Array.isArray(n) ? n : [n];
+const isObject = v => v && typeof v === 'object' && v.constructor === Object;
+const joinString = (a, b) => a ? a + (a.length ? ' ' : '') + b : b;
 
 export default ({ 
   breakpoints = [], 
@@ -6,44 +8,34 @@ export default ({
   getter = () => {},
   output = 'string'
 } = {}) => {
-  const map = key => mappings[key] !== undefined ? mappings[key] : key;
+  const getRoot = k => mappings[k] !== undefined ? mappings[k] : k;
+  const getBreakpoint = bp => isObject(bp) ? bp.label : bp;
 
   const fn = obj => {
-    const asArray = [];
-    const asObject = {};
+    let result = output === 'object' ? {} : output === 'array' ? [] : null;
     
-    for (let key in obj) {
+    for (let key in obj) {      
       if(mappings[key] === undefined) continue;
+      
+      const root = getRoot(key);
+      const responsiveValues = arr(obj[key]);
 
-      const value = obj[key];
-      if (value === null || value === undefined) continue; 
-
-      arr(value).forEach((val, i) => {
-        if (val === null || val === undefined) return;  
+      // Not a huge performance hit. Will optimize later.
+      responsiveValues.forEach((value, i) => {
+        // Ignore null values to prevent accidental class names.
+        if (value === null || value === undefined) return; 
         
-        const result = getter({
-          breakpoint: breakpoints[i],            
-          root: map(key),
-          value: val
-        });
+        const breakpoint = getBreakpoint(breakpoints[i]);
+        const classNameString = getter({ breakpoint, root, value });
 
-        if(result) {
-          asArray.push(result);
-          if(output === 'object') {
-            const existingValue = asObject[key]; 
-            asObject[key] = existingValue 
-              ? existingValue + ' ' + result 
-              : result;
-          }
-        }
+        if(!classNameString) return;
+        if(output === 'array') result.push(classNameString);
+        if(output === 'string') result = joinString(result, classNameString);
+        if(output === 'object') result[key] = joinString(result[key], classNameString) 
       });
     }
 
-    return output === 'string'
-      ?  asArray.join(' ') || null 
-        : output === 'object'
-          ? asObject
-          : asArray 
+    return result;
   }
 
   fn.mappings = mappings;
