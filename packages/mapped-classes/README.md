@@ -2,7 +2,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/mapped-classes">
-    <img src="https://img.shields.io/badge/npm-v1.1.0-black.svg">
+    <img src="https://img.shields.io/badge/npm-v1.2.1-black.svg">
   </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/license-MIT-black.svg">

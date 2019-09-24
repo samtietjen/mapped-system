@@ -1,6 +1,6 @@
 {
   "name": "mapped-classes",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "Convert objects into consistent class name strings",
   "main": "dist/index.js",
   "repository": {
