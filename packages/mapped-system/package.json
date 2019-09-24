@@ -12,7 +12,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "mapped-components": "^0.2.0",
+    "mapped-components": "^0.3.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   },
