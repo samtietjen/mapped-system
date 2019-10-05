@@ -1,19 +1,5 @@
 # Mapped System
-
-<p>
-  <a href="https://www.npmjs.com/package/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.3.0-black.svg">
-  <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
-    <img src="https://img.shields.io/badge/stability-experimental-black.svg">
-  </a>
-  <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/badge/license-MIT-black.svg">
-  </a>
-</p>
-
-**Build design systems with a simple stylesheet.**  
-In development and not ready for production use.  
-[Full Documentation](https://github.com/samtietjen/mapped-system)
+Please [see the documentation](https://github.com/samtietjen/mapped-system) for more information.
 
 ## Installation
 ```shell

@@ -4,8 +4,8 @@
 
 <h1 align="center">Mapped System</h1>
 
-<p align="center"><strong>Build design systems with stylesheets.
-</strong><br/><sub>React elements that render consistent class names via props.</sub></p>
+<p align="center">React style props that render consistent class names<br/>
+<sub><a href="#Introduction">Introduction</a> : <a href="#Installation">Installation</a> : <a href="#Usage">Usage</a> : <a href="#Packages">Packages</a> : <a href="#Credits">Credits</a> : <a href="#License">License</a></sub></p>
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
@@ -20,20 +20,11 @@
 </div>
 
 ## Introduction
-Mapped System is a library for creating React elements that render class names via props. It's great for building design system APIs into component libraries that use external stylesheets. Try it out on [CodeSandbox](https://codesandbox.io/s/mapped-system-basic-example-xcnbp)! 
-
-### Features
-- Renders consistent class names from props.
-- Includes responsive `md` and `lg` prefixes.
-- Supports custom rules with [Mapped Components](packages/mapped-components).
-- Injects styles with optional [CSS Props](#css-props).
-- Made to feel similar to [Styled System](https://github.com/styled-system/styled-system).
-- Weights less than `~3kb`.
-
+Mapped System is a library for creating React elements that render class names from props. It takes a simple, easy-to-maintain, rules-based approach without tedious logic. [Try it out on CodeSandbox!](https://codesandbox.io/s/mapped-system-basic-example-xcnbp)
 
 ## Installation
 ```shell
-npm i mapped-system --save
+npm i mapped-system
 ```
 
 ## Usage
@@ -88,31 +79,27 @@ Props will append values to their class names.
 // <div class="box-size-3"></div>
 ```
 
-### Advanced
+### Functions
 Functions can be used to handle complex styles.
 
 ```jsx
 const Box = useMapper({
-  width: n => n + 'w'
-}, ({ className, width }) => ({
-  className: className + (width > 3 && ' is-wide')
+  size: n => 'size-' n + '-box'
+}, ({ className, size }) => ({
+  className: className + (size > 3 && ' is-large')
 }));
 
-Box.propTypes = {
-  width: PropTypes.number
-}
-
-<Box width={1} />
+<Box size={1} />
 // As a mapping it will pass its value as an argument.
-// <div class="1w"></div>
+// <div class="size-4-box"></div>
 
-<Box width={4} />
+<Box size={4} />
 // As an argument it will merge its output with props.
-// <div class="4w is-wide"></div>
+// <div class="size-4-box is-large"></div>
 ```
 
-## Utilities
-Each component includes `base`, `blacklist`, and `tag` [utilities](packages/mapped-components#utilities). 
+### Utilities
+Each component includes [`base`](packages/mapped-components#base), [`blacklist`](packages/mapped-components#blacklist), and [`tag`](packages/mapped-components#tag) utilities.
 
 ```jsx
 <Box base="box" size={1} /> 
@@ -128,64 +115,60 @@ Each component includes `base`, `blacklist`, and `tag` [utilities](packages/mapp
 // <h2></h2>
 ```
 
-## CSS Props
-Generate and inject styles (with [Emotion](https://emotion.sh)) by pairing props with CSS properties.
+### CSS Props
+Generate and inject styles by pairing props with CSS properties.
 
 ```jsx
-import PropTypes from 'prop-types';
-import useMapper from 'mapped-system';
+Box.cssProps = {
+  m: ['margin']
+}
 
-const Box = useMapper({
-  size: 'box-size'
+<Box m="100px" /> 
+// <div class="css-0"></div>
+// .css-0 { margin: '100px'; }
+```
+
+### Extending
+Components maintain `mappings`, `propTypes`, and `cssProps`.
+
+```jsx
+const Section = useMapper({
+  ...Box.mappings
 });
 
-Box.cssProps = {
-  m: 'margin',
-  my: ['margin-top', 'margin-bottom']
+Section.propTypes = {
+  ...Box.propTypes
 }
 
-Box.propTypes = {
-  size: PropTypes.string,
-  m: PropTypes.any,
-  my: PropTypes.any
+Section.cssProps = {
+  ...Box.cssProps
+}
+
+Section.defaultProps = {
+  tag: 'section'
 }
 ```
 
-Props will append values to their CSS properties.
-```jsx
-<Box size="large" my="100px" /> 
-// <div class="box-size-large css-0"></div>
-// .css-0 { margin-top: 100px; margin-bottom: 100px; }
-```
-
-Responsive breakpoints are set to `375px` and `1024px`. 
+### Customizing
+To modify the [mapper](packages/mapped-components#Usage) directly use `createUsMapper`.
 
 ```jsx
-<Box size="large" m={['100px', '200px']} /> 
-// <div class="box-size-large css-0"></div>
-// .css-0 { margin: '100px'; @media(min-width: 375px) { margin: 200px; } }
-```
-
-Modify these breakpoints by creating a new mapper.
-
-```jsx
-import PropTypes from 'prop-types';
 import { createUseMapper } from 'mapped-system';
 
 const useMapper = createUseMapper({
   breakpoints: [
     { label: null, minWidth: 0 },
-    { label: 'md', minWidth: '600px' },
-    { label: 'lg', minWidth: '1200px' }
+    { label: 'md', minWidth: '375px' },
+    { label: 'lg', minWidth: '1024px' }
   ]
 });
 ```
 
 ## Packages
-| Package | Stability | Description |
-| ------- | --------- | ----------- |
-| [Mapped Classes](packages/mapped-classes) | **Stable** | Objects to consistent class name strings. |
-| [Mapped Components](packages/mapped-components) | Experimental | Write custom rules to fit your needs. |
+|     | Package | Stability | Description |
+| --- | ------- | --------- | ----------- |
+| <img src="https://tietjeninteractive.com/projects/mapped-system/mapped-components.svg" width="24px" /> | [Mapped Components](packages/mapped-components) | Experimental | React components that render class names from props |
+| <img src="https://tietjeninteractive.com/projects/mapped-system/mapped-classes.svg" width="24px" /> | [Mapped Classes](packages/mapped-classes) | Stable | Convert objects into consistent class name strings |
 
 ## Credits
 Inspired by [Styled System](https://github.com/styled-system/styled-system) and [Brent Jackson](https://jxnblk.com/).

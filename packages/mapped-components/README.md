@@ -1,6 +1,13 @@
-# Mapped Components
+<div align="center">
+  <img src="https://tietjeninteractive.com/projects/mapped-system/mapped-components.svg" width="100px" />
+</div>
 
-<p>
+<h1 align="center">Mapped Components</h1>
+
+<p align="center">React components that render class names from props<br/>
+<sub><a href="#Installation">Installation</a> : <a href="#Usage">Usage</a> : <a href="#Utilities">Utilities</a> : <a href="#CSS-Props">CSS Props</a> : <a href="#Extending">Extending</a> : <a href="#License">License</a></sub></p>
+
+<p align="center">
   <a href="https://www.npmjs.com/package/mapped-components">
     <img src="https://img.shields.io/badge/npm-v0.3.0-black.svg">
   </a>
@@ -12,17 +19,13 @@
   </a>
 </p>
 
-**React components that build class names from props.**  
-In development and not ready for production use.  
-
 ## Installation
 ```shell
 npm i mapped-components --save
 ```
 
 ## Usage
-
-Create a mapper with an array of breakpoints and a getter function.
+Components are created by a mapper that defines how class names are assembled.
 
 ```jsx
 import PropTypes from 'prop-types';
@@ -41,7 +44,7 @@ const useMapper = createMapper({
 });
 ```
 
-Pass an object that pairs props with the root of a class name to use it.
+Simply pass the mapper an object that pairs props with class names.
 
 ```jsx
 const Box = useMapper({
@@ -57,17 +60,14 @@ Box.propTypes = {
 }
 ```
 
-When the prop receives a value it will use the getter to attach it to the root.
+When a value is received it will be sent to the getter with the prop's class name (or `root`).
 
 ```jsx
 <Box size={0} />
 // <div class="box-size-0"></div>
-
-<Box size="large" />
-// <div class="box-size-large"></div>
 ```
 
-If the value is an array then a responsive class will be added for each item.  
+If the value is an array then the relevant breakpoint will sent as well.
 
 ```jsx
 <Box size={[1, 2, 3]} />
@@ -78,47 +78,63 @@ If the value is an array then a responsive class will be added for each item.
 ## Utilities
 Each component includes a set of built-in utility props.
 
-- **base** – `string` – Prepend a class to the class list.
-- **blacklist** – `array` – Block attributes from an element.
-- **tag** – `string` – Transform the HTML tag.
-
+### base
+Prepend a class to the class list.
+- Type: `string`
 ```jsx
 <Box base="box" size={1} /> 
 // <div class="box box-size-1"></div>
+```
 
+### blacklist
+Block attributes from an element.
+- Type: `array`
+```jsx
 <Box blacklist={['href']} href="#" /> 
 // <div></div>
+```
 
+### tag
+Transform the HTML tag.
+- Type: `string`
+- Default: `div`
+```jsx
 <Box tag="h2" /> 
 // <h2></h2>
 ```
 
 ## CSS Props
-Keep your stylesheet focused by generating cumbersome css.  
+Generate and inject styles by pairing props with CSS properties.
+
 ```jsx
-const Box = useMapper({
-  size: 'box-size'
-});
-
-// Pairs props will css properties.
 Box.cssProp = {
-  m: 'margin',
-  mx: ['margin-left', 'margin-right']
+  m: ['margin'],
 }
 
-Box.propTypes = {
-  size: PropTypes.string,
-  m: PropTypes.any,
-  mx: PropTypes.any
-}
+<Box m="10px" />
+// <div class="css-0"></div>
+// .css-0 { margin: 10px; }
 ```
 
-Values passed to these props will use [emotion](https://emotion.sh) to generate css.
+## Extending
+Components maintain `mappings`, `propTypes`, and `cssProps`.
 
 ```jsx
-<Box size="large" m="10px" />
-// <div class="box-size-large css-0"></div>
-// .css-0 { margin-left: 10px; margin-right: 10px; }
+const Section = useMapper({
+  ...Box.mappings
+});
+
+Section.propTypes = {
+  ...Box.propTypes
+}
+
+Section.cssProps = {
+  ...Box.cssProps
+}
+
+Section.defaultProps = {
+  tag: 'section'
+}
 ```
 
 ## License

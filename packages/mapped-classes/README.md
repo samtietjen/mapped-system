@@ -1,6 +1,12 @@
-<h1>Mapped Classes</h1>
+<div align="center">
+  <img src="https://tietjeninteractive.com/projects/mapped-system/mapped-classes.svg" width="100px" />
+</div>
 
-<p>
+<h1 align="center">Mapped Classes</h1>
+
+<p align="center">Convert objects into consistent class name strings<br/>
+
+<p align="center">
   <a href="https://www.npmjs.com/package/mapped-classes">
     <img src="https://img.shields.io/badge/npm-v1.2.1-black.svg">
   </a>
@@ -8,8 +14,6 @@
     <img src="https://img.shields.io/badge/license-MIT-black.svg">
   </a>
 </p>
-
-Convert objects into consistent class name strings.
 
 ## Installation
 ```shell
@@ -21,7 +25,7 @@ npm i mapped-classes --save
 import createMapper from 'mapped-classes';
 
 const useMapper = createMapper({
-  output: 'string', // Optional. Also accepts 'object' and 'array'.
+  output: 'string', // string (default) | array | object 
   breakpoints: [null, 'md', 'lg'],
   mappings: {fontSize: 'font-size', padding: 'p'},
   getter: ({breakpoint, root, value}) =>
@@ -35,7 +39,9 @@ const classNames = useMapper({
   padding: [1, 2, 3]
 }); 
 
-// font-size-1 p-1 md-p-2 lg-p-3
+// string: 'font-size-1 p-1 md-p-2 lg-p-3'
+// array: ['font-size-1', 'p-1', 'md-p-2', 'lg-p-3']
+// object: {fontSize: 'font-size-1', padding: 'p-1 md-p-2 lg-p-3'}
 ```
 
 ## License
