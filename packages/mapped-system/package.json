@@ -1,6 +1,6 @@
 {
   "name": "mapped-system",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Single element components that map to your stylesheet",
   "main": "dist/index.js",
   "repository": {
@@ -12,7 +12,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "mapped-components": "^0.3.0",
+    "mapped-components": "^0.4.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   },
