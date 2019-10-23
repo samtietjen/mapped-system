@@ -81,3 +81,29 @@ describe('Mapped Components with Emotion', () => {
     expect(ref.current.tagName).toBe('DIV');
   });
 });
+
+describe('mx Prop', () => {
+  test('Renders basic styles.', () => {
+    const json = createJson(<Box mx={{display: 'block', margin: '20px'}} />);
+    expect(json).toHaveStyleRule('display', 'block');
+    expect(json).toHaveStyleRule('margin', '20px');
+    expect(json).toMatchSnapshot();
+  });
+
+  test('Renders responsive styles.', () => {
+    const json = createJson(<Box mx={{ margin: ['10px', '20px', '30px'] }} />);
+    expect(json).toHaveStyleRule('margin', '10px');
+    expect(json).toHaveStyleRule('margin', '20px', { media: '(min-width: 600px)' });
+    expect(json).toHaveStyleRule('margin', '30px', { media: '(min-width: 1000px)' });
+    expect(json).toMatchSnapshot();
+  });
+
+  test('Renders styles from shorthand props.', () => {
+    const json = createJson(<Box mx={{ m: ['10px', '20px', '30px'], p: '10px' }} />);
+    expect(json).toHaveStyleRule('margin', '10px');
+    expect(json).toHaveStyleRule('margin', '20px', { media: '(min-width: 600px)' });
+    expect(json).toHaveStyleRule('margin', '30px', { media: '(min-width: 1000px)' });
+    expect(json).toHaveStyleRule('padding', '10px');
+    expect(json).toMatchSnapshot();
+  });
+});

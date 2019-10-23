@@ -20,3 +20,12 @@ export const omit = (obj, keys) => {
 export const toArray = n => Array.isArray(n) ? n : [n];
 
 export const objectToString = obj => Object.values(obj).join(' ') || '';
+
+export const camelCaseToDash = str => str
+  .replace(/[^a-zA-Z0-9]+/g, '-')
+  .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+  .replace(/([a-z])([A-Z])/g, '$1-$2')
+  .replace(/([0-9])([^0-9])/g, '$1-$2')
+  .replace(/([^0-9])([0-9])/g, '$1-$2')
+  .replace(/-+/g, '-')
+  .toLowerCase();

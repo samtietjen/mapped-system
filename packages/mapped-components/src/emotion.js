@@ -1,44 +1,75 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import isPropValid from '@emotion/is-prop-valid';
-import { joinStrings, objectToString, toArray } from './utilities';
+import { joinStrings, objectToString, toArray, camelCaseToDash } from './utilities';
 
-const createStyles = (props, cssProps, breakpoints) => {
-  let result = '';
+const mxShorthands = {
+  m: 'margin',
+  mt: 'margin-top',
+  mr: 'margin-right',
+  mb: 'margin-bottom',
+  ml: 'margin-left',
+  mx: ['margin-left', 'margin-right'],
+  my: ['margin-top', 'margin-bottom'],
+  p: 'padding',
+  pt: 'padding-top',
+  pr: 'padding-right',
+  pb: 'padding-bottom',
+  pl: 'padding-left',
+  px: ['padding-left', 'padding-right'],
+  py: ['padding-top', 'padding-bottom']
+}
 
-  for (const prop in props) {
-    const p = cssProps[prop];
-    const v = props[prop];
-    if(!p || !v) continue;
+const normalizeStyles = (props, cssProps, mx) => {
+  let result = [];
 
-    // Optimize for performance later.
-    const properties = toArray(p);
-    const values = toArray(v);
-    
-    values.forEach((value, index) => {
-      let css = '';
+  if(cssProps) {
+    for (const prop in cssProps) {
+      const values = toArray(props[prop]);
+      const properties = toArray(cssProps[prop]);
+      if(!values || !properties) continue;
+      result.push({ values, properties });
+    }
+  }
 
-      properties.forEach(property => {
-        css = css + ` ${property}: ${value};`
-      });
-      
-      const { minWidth } = breakpoints[index];
-      css = minWidth ? ` @media(min-width: ${minWidth}) {${css}}` : css;
-      result += css;
-    });
+  if(mx) {
+    const shorthandKeys = Object.keys(mxShorthands);
+    for (const property in mx) {
+      const p = shorthandKeys.includes(property) ? mxShorthands[property] : property;
+      const values = toArray(mx[property]);
+      const properties = toArray(camelCaseToDash(p));
+      result.push({properties, values});
+    }
   }
 
   return result;
 }
 
-export default (props, mapper, breakpoints, cssProps) => {
-  const { mappings } = mapper;
-  const { base, className, tag = 'div' } = props;
+const createStyles = (props, cssProps, breakpoints) => {
+  const { mx } = props;
+  const styles = normalizeStyles(props, cssProps, mx);
+  
+  return styles.reduce((acc, obj) => {
+    const { properties, values } = obj;
 
-  const mcObject = mapper(props);
-  const mcClasses = objectToString(mcObject);
+    values.forEach((value, index) => {
+      let css = '';
+      const { minWidth } = breakpoints[index];
+      properties.forEach(property => css += ` ${property}: ${value};`);
+      acc += minWidth ? ` @media(min-width: ${minWidth}) {${css}}` : css;
+    });
+
+    return acc
+  }, '');
+}
+
+export default (props, mapper, breakpoints, cssProps) => {
+  const { base, className, tag = 'div' } = props;
+  const { mappings } = mapper;
+
+  const classes = objectToString(mapper(props));
+  const cx = joinStrings(base, classes, className);
   const styles = createStyles(props, cssProps, breakpoints);
-  const cx = joinStrings(base, mcClasses, className);
 
   const MappedComponent = styled(tag, {
     shouldForwardProp: prop =>

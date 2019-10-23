@@ -7,17 +7,12 @@ import { mergeObjFunc } from './utilities';
 const createUseMapper = config => (mappings, callback) => {
   const { breakpoints } = config;
 
-  const mapper = useMappedClasses({ 
-    ...config,
-    mappings,
-    breakpoints,
-    output: 'object'
-  });
+  const mapper = useMappedClasses({ ...config, mappings, breakpoints, output: 'object' });
 
   const MappedComponent = React.forwardRef((props, ref) => {
     const { cssProps } = MappedComponent;
     const propsWithCallback = { ...mergeObjFunc(props, callback), ref }
-    const constructor = cssProps ? emotion : mapped;
+    const constructor = cssProps || props.mx ? emotion : mapped;
     return constructor(propsWithCallback, mapper, breakpoints, cssProps);
   });
 

@@ -2,31 +2,49 @@
 
 exports[`Mapped Components with Emotion Adds mapped class names. 1`] = `
 <div
-  className="box-size-large css-7trrcd-MappedComponent e1oag0i80"
+  className="box-size-large css-1xdfq62-MappedComponent e1oag0i80"
 />
 `;
 
 exports[`Mapped Components with Emotion Adds mapped class names. 2`] = `
 <div
-  className="box-size-1 md-box-size-2 lg-box-size-3 css-7trrcd-MappedComponent e1oag0i80"
+  className="box-size-1 md-box-size-2 lg-box-size-3 css-1xdfq62-MappedComponent e1oag0i80"
 />
 `;
 
 exports[`Mapped Components with Emotion Includes element attributes. 1`] = `
 <div
-  className="css-7trrcd-MappedComponent e1oag0i80"
+  className="css-1xdfq62-MappedComponent e1oag0i80"
   href="#"
 />
 `;
 
 exports[`Mapped Components with Emotion Renders responsive styles. 1`] = `
 <div
-  className="css-bu69j4-MappedComponent e1oag0i80"
+  className="css-1ixl047-MappedComponent e1oag0i80"
 />
 `;
 
 exports[`Mapped Components with Emotion Renders single properties. 1`] = `
 <div
-  className="css-1pqchow-MappedComponent e1oag0i80"
+  className="css-1lw7fgp-MappedComponent e1oag0i80"
+/>
+`;
+
+exports[`mx Prop Renders basic styles. 1`] = `
+<div
+  className="css-p9qwt8-MappedComponent e1oag0i80"
+/>
+`;
+
+exports[`mx Prop Renders responsive styles. 1`] = `
+<div
+  className="css-6d4wue-MappedComponent e1oag0i80"
+/>
+`;
+
+exports[`mx Prop Renders styles from shorthand props. 1`] = `
+<div
+  className="css-1kk6a6h-MappedComponent e1oag0i80"
 />
 `;
