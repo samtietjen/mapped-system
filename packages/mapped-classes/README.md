@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/mapped-classes">
-    <img src="https://img.shields.io/badge/npm-v1.2.1-black.svg">
+    <img src="https://img.shields.io/badge/npm-v1.3.0-black.svg">
   </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/license-MIT-black.svg">
@@ -25,7 +25,6 @@ npm i mapped-classes --save
 import createMapper from 'mapped-classes';
 
 const useMapper = createMapper({
-  output: 'string', // string (default) | array | object 
   breakpoints: [null, 'md', 'lg'],
   mappings: {fontSize: 'font-size', padding: 'p'},
   getter: ({breakpoint, root, value}) =>
@@ -39,9 +38,7 @@ const classNames = useMapper({
   padding: [1, 2, 3]
 }); 
 
-// string: 'font-size-1 p-1 md-p-2 lg-p-3'
-// array: ['font-size-1', 'p-1', 'md-p-2', 'lg-p-3']
-// object: {fontSize: 'font-size-1', padding: 'p-1 md-p-2 lg-p-3'}
+// 'font-size-1 p-1 md-p-2 lg-p-3'
 ```
 
 ## License

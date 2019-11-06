@@ -65,11 +65,6 @@ Box.propTypes = {
 <Box tag="section" />
 // Has a set of built-in utility props.
 // <section></section>
-
-<Box size={1} m="100px" />
-// Generates css using emotionjs.
-// <div class="box-size-1 css-0"></div>
-// .css-0 { margin: 100px; }
 ```
 
 ## License

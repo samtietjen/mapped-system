@@ -1,41 +1,41 @@
-const arr = n => Array.isArray(n) ? n : [n];
-const isObject = v => v && typeof v === 'object' && v.constructor === Object;
+const toArray = n => Array.isArray(n) ? n : [n];
 const joinString = (a, b) => a ? a + (a.length ? ' ' : '') + b : b;
 
 export default ({ 
   breakpoints = [], 
   mappings = {}, 
-  getter = () => {},
-  output = 'string'
+  getter = () => {}
 } = {}) => {
-  const getRoot = k => mappings[k] !== undefined ? mappings[k] : k;
-  const getBreakpoint = bp => isObject(bp) ? bp.label : bp;
-
   const fn = obj => {
-    let result = output === 'object' ? {} : output === 'array' ? [] : null;
+    let result = '';
     
-    for (let key in obj) {      
+    for (let key in obj) { 
+      // Skip undefined mappings.
       if(mappings[key] === undefined) continue;
+
+      // Skip null and undefined initial values.
+      const initialValue = obj[key];   
+      if(initialValue === undefined || initialValue === null) continue;
       
-      const root = getRoot(key);
-      const responsiveValues = arr(obj[key]);
+      // Accept null root values.
+      const root = mappings[key] !== undefined ? mappings[key] : key;
 
-      // Not a huge performance hit. Will optimize later.
-      responsiveValues.forEach((value, i) => {
-        // Ignore null values to prevent accidental class names.
-        if (value === null || value === undefined) return; 
-        
-        const breakpoint = getBreakpoint(breakpoints[i]);
-        const classNameString = getter({ breakpoint, root, value });
+      // Loop through responsive values.
+      const responsiveValues = toArray(initialValue);
+      const length = responsiveValues.length;
+      for (let i = 0; i < length; i++) {
+        // Skip null and undefined values.
+        const value = responsiveValues[i];
+        if (value === null || value === undefined) continue;
 
-        if(!classNameString) return;
-        if(output === 'array') result.push(classNameString);
-        if(output === 'string') result = joinString(result, classNameString);
-        if(output === 'object') result[key] = joinString(result[key], classNameString) 
-      });
+        // Use the getter to assemble the class name segments.
+        const breakpoint = breakpoints[i];
+        const className = getter({ breakpoint, root, value });
+        result = className ? joinString(result, className) : result;
+      }
     }
 
-    return result;
+    return result || null;
   }
 
   fn.mappings = mappings;

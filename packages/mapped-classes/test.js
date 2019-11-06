@@ -81,17 +81,3 @@ test('Accepts 0 values.', () => {
   const a = mapper({ padding: 0 });
   expect(a).toBe('p-0');  
 });
-
-test('Outputs as an object.', () => {
-  const a = mapperAsObject({ padding: 1 });
-  const b = mapperAsObject({ padding: [1, 2, 3] });
-  expect(a).toEqual({ padding: 'p-1' }); 
-  expect(b).toEqual({ padding: 'p-1 md-p-2 lg-p-3' });  
-});
-
-test('Outputs as an array.', () => {
-  const a = mapperAsArray({padding: 1});
-  const b = mapperAsArray({padding: [1, 2, 3]});
-  expect(a).toEqual(['p-1']); 
-  expect(b).toEqual(['p-1', 'md-p-2', 'lg-p-3']);  
-});

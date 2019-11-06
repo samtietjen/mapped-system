@@ -5,11 +5,11 @@
 <h1 align="center">Mapped Components</h1>
 
 <p align="center">React components that render class names from props<br/>
-<sub><a href="#Installation">Installation</a> : <a href="#Usage">Usage</a> : <a href="#Utilities">Utilities</a> : <a href="#CSS-Props">CSS Props</a> : <a href="#Extending">Extending</a> : <a href="#License">License</a></sub></p>
+<sub><a href="#Installation">Installation</a> : <a href="#Usage">Usage</a> : <a href="#Utilities">Utilities</a> : <a href="#Extending">Extending</a> : <a href="#License">License</a></sub></p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/mapped-components">
-    <img src="https://img.shields.io/badge/npm-v0.3.0-black.svg">
+    <img src="https://img.shields.io/badge/npm-v0.5.0-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -25,18 +25,14 @@ npm i mapped-components --save
 ```
 
 ## Usage
-Components are created by a mapper that defines how class names are assembled.
+Create a mapper by defining breakpoints and a getter.
 
 ```jsx
 import PropTypes from 'prop-types';
 import createMapper from 'mapped-components';
 
 const useMapper = createMapper({
-  breakpoints: [
-    { label: null, minWidth: 0 },
-    { label: 'md', minWidth: '600px' },
-    { label: 'lg', minWidth: '1200px' }
-  ],
+  breakpoints: [null, 'md', 'lg'],
   getter: ({ breakpoint, root, value }) =>
     [breakpoint, root, value]
       .filter(x => x || x === 0) // Value can be 0.
@@ -44,7 +40,7 @@ const useMapper = createMapper({
 });
 ```
 
-Simply pass the mapper an object that pairs props with class names.
+Create a component by pairing props with the root of a class name.
 
 ```jsx
 const Box = useMapper({
@@ -60,23 +56,22 @@ Box.propTypes = {
 }
 ```
 
-When a value is received it will be sent to the getter with the prop's class name (or `root`).
+When a prop receives a value it will be sent to the getter with its root.
 
 ```jsx
 <Box size={0} />
 // <div class="box-size-0"></div>
 ```
 
-If the value is an array then the relevant breakpoint will sent as well.
+Arrays will also send the getter a breakpoint of a matching index.
 
 ```jsx
 <Box size={[1, 2, 3]} />
-// Breakpoint labels specified in the mapper: [null, 'md', 'lg']
 // <div class="box-size-1 md-box-size-2 lg-box-size-3"></div>
 ```
 
 ## Utilities
-Each component includes a set of built-in utility props.
+Each component includes a set of utility props.
 
 ### base
 Prepend a class to the class list.
@@ -103,21 +98,8 @@ Transform the HTML tag.
 // <h2></h2>
 ```
 
-## CSS Props
-Generate and inject styles by pairing props with CSS properties.
-
-```jsx
-Box.cssProp = {
-  m: ['margin'],
-}
-
-<Box m="10px" />
-// <div class="css-0"></div>
-// .css-0 { margin: 10px; }
-```
-
 ## Extending
-Components maintain `mappings`, `propTypes`, and `cssProps`.
+Components maintain their `mappings` and `propTypes`.
 
 ```jsx
 const Section = useMapper({
@@ -126,10 +108,6 @@ const Section = useMapper({
 
 Section.propTypes = {
   ...Box.propTypes
-}
-
-Section.cssProps = {
-  ...Box.cssProps
 }
 
 Section.defaultProps = {

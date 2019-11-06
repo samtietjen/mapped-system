@@ -9,7 +9,7 @@
 
 <div align="center">
   <a href="https://www.npmjs.com/package/@samtietjen/mapped-system">
-    <img src="https://img.shields.io/badge/npm-v0.3.0-black.svg">
+    <img src="https://img.shields.io/badge/npm-v0.5.0-black.svg">
   </a>
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-black.svg">
@@ -79,23 +79,18 @@ Props will append values to their class names.
 // <div class="box-size-3"></div>
 ```
 
-### Functions
-Functions can be used to handle complex styles.
+### Advanced
+
+Functions can be used to handle complex mappings.
 
 ```jsx
 const Box = useMapper({
   size: n => 'size-' n + '-box'
-}, ({ className, size }) => ({
-  className: className + (size > 3 && ' is-large')
-}));
+});
 
 <Box size={1} />
 // As a mapping it will pass its value as an argument.
 // <div class="size-4-box"></div>
-
-<Box size={4} />
-// As an argument it will merge its output with props.
-// <div class="size-4-box is-large"></div>
 ```
 
 ### Utilities
@@ -115,21 +110,8 @@ Each component includes [`base`](packages/mapped-components#base), [`blacklist`]
 // <h2></h2>
 ```
 
-### CSS Props
-Generate and inject styles by pairing props with CSS properties.
-
-```jsx
-Box.cssProps = {
-  m: ['margin']
-}
-
-<Box m="100px" /> 
-// <div class="css-0"></div>
-// .css-0 { margin: '100px'; }
-```
-
 ### Extending
-Components maintain `mappings`, `propTypes`, and `cssProps`.
+Components maintain `mappings` and `propTypes`.
 
 ```jsx
 const Section = useMapper({
@@ -140,28 +122,9 @@ Section.propTypes = {
   ...Box.propTypes
 }
 
-Section.cssProps = {
-  ...Box.cssProps
-}
-
 Section.defaultProps = {
   tag: 'section'
 }
-```
-
-### Customizing
-To modify the [mapper](packages/mapped-components#Usage) directly use `createUsMapper`.
-
-```jsx
-import { createUseMapper } from 'mapped-system';
-
-const useMapper = createUseMapper({
-  breakpoints: [
-    { label: null, minWidth: 0 },
-    { label: 'md', minWidth: '375px' },
-    { label: 'lg', minWidth: '1024px' }
-  ]
-});
 ```
 
 ## Packages
@@ -171,7 +134,7 @@ const useMapper = createUseMapper({
 | <img src="https://tietjeninteractive.com/projects/mapped-system/mapped-classes.svg" width="24px" /> | [Mapped Classes](packages/mapped-classes) | Stable | Convert objects into consistent class name strings |
 
 ## Credits
-Inspired by [Styled System](https://github.com/styled-system/styled-system) and [Brent Jackson](https://jxnblk.com/).
+Inspired by [Styled System](https://github.com/styled-system/styled-system).
 
 ## License
 MIT © [Sam Tietjen](https://samtietjen.com)

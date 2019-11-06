@@ -72,12 +72,6 @@ exports[`Mapped System Objects prefix keys to values. 3`] = `
 />
 `;
 
-exports[`Mapped System Pass custom configs with createUseMapper 1`] = `
-<div
-  className="box-size-1 md-box-size-2 lg-box-size-3 xlg-box-size-4"
-/>
-`;
-
 exports[`Mapped System Percentage signs convert to p. 1`] = `
 <div
   className="box-size-100p"

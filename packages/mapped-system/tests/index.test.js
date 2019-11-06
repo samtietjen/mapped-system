@@ -103,21 +103,4 @@ describe('Mapped System', () => {
     expect(json.props.className).toEqual('is-primary-color');  
     expect(json).toMatchSnapshot();
   });
-
-  test('Pass custom configs with createUseMapper', () => {
-    const customUseMapper = createUseMapper({
-      breakpoints: [
-        { label: null, minWidth: 0 },
-        { label: 'md', minWidth: '600px' },
-        { label: 'lg', minWidth: '1200px' },
-        { label: 'xlg', minWidth: '1600px' }
-      ]
-    });
-
-    const CustomBox = customUseMapper({ size: 'box-size' });
-    CustomBox.propTypes = { size: PropTypes.any }
-    const json = createJson(<CustomBox size={[1, 2, 3, 4]} />);
-    expect(json.props.className).toEqual('box-size-1 md-box-size-2 lg-box-size-3 xlg-box-size-4');  
-    expect(json).toMatchSnapshot();
-  });
 });
