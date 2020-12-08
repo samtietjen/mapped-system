@@ -1,7 +1,3 @@
-<div align="center">
-  <img src="https://tietjeninteractive.com/projects/mapped-system/mapped-system.svg" width="100px" />
-</div>
-
 <h1 align="center">Mapped System</h1>
 
 <p align="center">React style props that render consistent class names<br/>
