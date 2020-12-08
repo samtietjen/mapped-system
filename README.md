@@ -124,10 +124,10 @@ Section.defaultProps = {
 ```
 
 ## Packages
-|     | Package | Stability | Description |
-| --- | ------- | --------- | ----------- |
-| <img src="https://tietjeninteractive.com/projects/mapped-system/mapped-components.svg" width="24px" /> | [Mapped Components](packages/mapped-components) | Experimental | React components that render class names from props |
-| <img src="https://tietjeninteractive.com/projects/mapped-system/mapped-classes.svg" width="24px" /> | [Mapped Classes](packages/mapped-classes) | Stable | Convert objects into consistent class name strings |
+| Package | Stability | Description |
+| ------- | --------- | ----------- |
+| [Mapped Components](packages/mapped-components) | Experimental | React components that render class names from props |
+| [Mapped Classes](packages/mapped-classes) | Stable | Convert objects into consistent class name strings |
 
 ## Credits
 Inspired by [Styled System](https://github.com/styled-system/styled-system).
